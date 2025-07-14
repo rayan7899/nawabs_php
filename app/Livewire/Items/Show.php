@@ -13,7 +13,7 @@ class Show extends Component
 
     public function mount()
     {
-        $this->items = Item::get();
+        $this->items = Item::orderBy('name')->get();
     }
 
     public function toggleItem(Item $item)
