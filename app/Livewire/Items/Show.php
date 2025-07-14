@@ -3,6 +3,7 @@
 namespace App\Livewire\Items;
 
 use App\Models\Item;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -22,9 +23,10 @@ class Show extends Component
             $item->update([
                 'active' => !$item->active,
             ]);
-            $this->redirectRoute('showItems', navigate: true);
+            $this->skipRender();
         } catch (\Throwable $th) {
-            dd($th);
+            Log::error($th);
+            dd('Error updating item: ' . $th->getMessage());
         }
     }
 
