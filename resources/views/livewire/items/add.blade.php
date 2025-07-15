@@ -7,4 +7,7 @@
     <flux:button wire:click="save">
         إضافة
     </flux:button>
+    <flux:button variant="subtle" wire:click="delete">
+        حذف
+    </flux:button>
 </div>
