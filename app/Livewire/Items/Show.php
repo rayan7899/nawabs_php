@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Items;
 
+use App\Models\category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
@@ -10,11 +11,11 @@ use Livewire\Component;
 #[Layout('components.layouts.guest')]
 class Show extends Component
 {
-    public $items;
+    public $categories;
 
     public function mount()
     {
-        $this->items = Item::orderBy('name')->get();
+        $this->categories = category::whereHas('items')->orderBy('name')->get();
     }
 
     public function toggleItem(Item $item)
