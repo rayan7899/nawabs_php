@@ -10,7 +10,7 @@ Route::get('seed', function () {
 
     $categories = [
         [
-            'name' => 'فواكه', 
+            'name' => 'فواكه',
             'color' => '#FF5733',
             'items' => [
                 ['name' => 'تفاح', 'active' => false],
@@ -32,7 +32,7 @@ Route::get('seed', function () {
             ],
         ],
         [
-            'name' => 'خضروات', 
+            'name' => 'خضروات',
             'color' => '#33FF57',
             'items' => [
                 ['name' => 'خيار', 'active' => false],
@@ -64,7 +64,7 @@ Route::get('seed', function () {
             ],
         ],
         [
-            'name' => 'معلبات', 
+            'name' => 'معلبات',
             'color' => '#3357FF',
             'items' => [
                 ['name' => 'فاصوليا', 'active' => false],
@@ -81,7 +81,7 @@ Route::get('seed', function () {
             ],
         ],
         [
-            'name' => 'حلويات', 
+            'name' => 'حلويات',
             'color' => '#FF33A1',
             'items' => [
                 ['name' => 'شوكولاتة', 'active' => false],
@@ -90,7 +90,7 @@ Route::get('seed', function () {
             ],
         ],
         [
-            'name' => 'مشروبات', 
+            'name' => 'مشروبات',
             'color' => '#A133FF',
             'items' => [
                 ['name' => 'عصير', 'active' => false],
@@ -100,7 +100,8 @@ Route::get('seed', function () {
                 ['name' => 'مشروبات غازية', 'active' => false],
             ],
         ],
-        [            'name' => 'مخبوزات', 
+        [
+            'name' => 'مخبوزات',
             'color' => '#33FFFF',
             'items' => [
                 ['name' => 'خبز', 'active' => false],
@@ -108,7 +109,8 @@ Route::get('seed', function () {
                 ['name' => 'بيتزا', 'active' => false],
             ],
         ],
-        [            'name' => 'ألبان', 
+        [
+            'name' => 'ألبان',
             'color' => '#edd9d4',
             'items' => [
                 ['name' => 'حليب', 'active' => false],
@@ -119,7 +121,10 @@ Route::get('seed', function () {
     ];
     dump('waiting...');
     foreach ($categories as $category) {
-        $cat = category::firstOrCreate($category);
+        $cat = category::firstOrCreate([
+            'name' => $category['name'],
+            'color' => $category['color'],
+        ]);
         foreach ($category['items'] as $item) {
             $cat->items()->firstOrCreate($item);
         }
@@ -145,4 +150,4 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
