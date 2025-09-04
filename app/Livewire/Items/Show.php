@@ -11,12 +11,7 @@ use Livewire\Component;
 #[Layout('components.layouts.guest')]
 class Show extends Component
 {
-    public $categories;
-
-    public function mount()
-    {
-        $this->categories = category::whereHas('items')->orderBy('name')->get();
-    }
+    public $search = '';
 
     public function toggleItem(Item $item)
     {
@@ -33,6 +28,18 @@ class Show extends Component
 
     public function render()
     {
-        return view('livewire.items.show');
+        $categories = category::whereHas('items', function ($q) {
+            if ($this->search) {
+                $q->where('name', 'like', '%' . $this->search . '%');
+            }
+        })->with(['items' => function ($q) {
+            if ($this->search) {
+                $q->where('name', 'like', '%' . $this->search . '%');
+            }
+        }])->orderBy('name')->get();
+
+        return view('livewire.items.show', [
+            'categories' => $categories,
+        ]);
     }
 }
