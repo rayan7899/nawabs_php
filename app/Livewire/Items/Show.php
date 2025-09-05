@@ -6,12 +6,15 @@ use App\Models\category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Session;
 use Livewire\Component;
 
 #[Layout('components.layouts.guest')]
 class Show extends Component
 {
     public $search = '';
+    #[Session('shoppingMode')]
+    public $shoppingMode = false;
 
     public function toggleItem(Item $item)
     {
@@ -28,11 +31,13 @@ class Show extends Component
 
     public function render()
     {
-        $categories = category::whereHas('items', function ($q) {
+        $categories = category::whereHas('items', function ($q){
+            $q->where('active', $this->shoppingMode);
             if ($this->search) {
                 $q->where('name', 'like', '%' . $this->search . '%');
             }
         })->with(['items' => function ($q) {
+            $q->where('active', $this->shoppingMode);
             if ($this->search) {
                 $q->where('name', 'like', '%' . $this->search . '%');
             }
