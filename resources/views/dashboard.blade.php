@@ -1,18 +1,19 @@
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-2">
-            <div class="relative rounded-xl border border-neutral-200 dark:border-neutral-700">
+    <div class="flex h-full w-full flex-1 flex-col gap-8 rounded-3xl bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-blue-900 p-8">
+        <div class="grid auto-rows-min gap-8 md:grid-cols-2">
+            <div class="relative rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
                 <livewire:items.add/>
             </div>
-            <div class="relative rounded-xl border border-neutral-200 dark:border-neutral-700">
+            <div class="relative rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
                 <livewire:category.manage />
             </div>
-            {{-- <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div> --}}
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+        <div class="relative w-full rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
+            <livewire:items.manage />
         </div>
+        {{-- <div class="relative h-full flex-1 overflow-hidden rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl flex items-center justify-center">
+            <x-placeholder-pattern class="absolute inset-0 size-full stroke-blue-200 dark:stroke-blue-700" />
+            <span class="relative z-10 text-blue-400 dark:text-blue-300 text-2xl font-bold tracking-wide">لوحة التحكم</span>
+        </div> --}}
     </div>
 </x-layouts.app>

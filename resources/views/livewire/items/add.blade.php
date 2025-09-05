@@ -18,8 +18,5 @@
         <flux:button type="submit">
             إضافة
         </flux:button>
-        <flux:button type="button" variant="subtle" wire:click="delete">
-            حذف
-        </flux:button>
     </form>
 </div>

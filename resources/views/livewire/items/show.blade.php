@@ -11,7 +11,7 @@
 
     <div class="mb-4 w-full max-w-md">
         <flux:input
-            type="text"
+            type="search"
             wire:model.live.debounce.0ms="search"
             name="search"
             placeholder="ابحث عن غرض"
