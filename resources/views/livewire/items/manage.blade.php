@@ -1,4 +1,6 @@
-<div class="p-4 bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-blue-950 dark:via-neutral-900 dark:to-blue-900 rounded-lg shadow-md w-full border border-blue-100 dark:border-blue-800" dir="rtl" style="text-align: right;">
+<div class="p-0 rounded-lg shadow-md w-full" dir="rtl" style="text-align: right;">
+    <flux:heading size="xl" class="mb-1"> {{ __('ادارة العناصر') }} </flux:heading>
+    <flux:separator variant="subtle" class="mb-3" />
     <div class="mb-4 flex flex-row-reverse items-center gap-2">
         <flux:input wire:model.live.debounce.0ms="search"
             type="search"

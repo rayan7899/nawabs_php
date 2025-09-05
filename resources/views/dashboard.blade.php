@@ -1,14 +1,14 @@
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-8 rounded-3xl bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-neutral-900 dark:via-neutral-800 dark:to-blue-900 p-8">
+    <div class="flex h-full w-full flex-1 flex-col gap-8 rounded-3xl bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-neutral-800 dark:via-neutral-800 dark:to-blue-900 p-lg-8">
         <div class="grid auto-rows-min gap-8 md:grid-cols-2">
-            <div class="relative rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
+            <div class="relative rounded-2xl bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
                 <livewire:items.add/>
             </div>
-            <div class="relative rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
+            <div class="relative rounded-2xl bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
                 <livewire:category.manage />
             </div>
         </div>
-        <div class="relative w-full rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
+        <div class="relative w-full rounded-2xl bg-white dark:bg-neutral-900 shadow-xl p-8 transition hover:shadow-2xl">
             <livewire:items.manage />
         </div>
         {{-- <div class="relative h-full flex-1 overflow-hidden rounded-2xl border border-blue-200 dark:border-blue-700 bg-white dark:bg-neutral-900 shadow-xl flex items-center justify-center">
