@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Items\Show as ShowItems;
+use App\Livewire\Items\Usage;
 use App\Models\category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Route;
@@ -148,6 +149,10 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
+    Route::prefix('items')->name('item.')->group(function () {
+        Route::get('{item}/usage', Usage::class)->name('usage');
+    });
 });
 
 require __DIR__ . '/auth.php';

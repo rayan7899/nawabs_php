@@ -23,25 +23,27 @@
                 <tbody>
                     @forelse ($category->items as $item)
                         <tr class="border-b last:border-b-0 hover:bg-blue-100 dark:hover:bg-blue-900 transition duration-200">
-                            <td class="p-2 align-middle">
+                            <td class="py-2 align-middle">
                                 @if ($editItemId === $item->id)
                                     <input type="text" wire:model.defer="editItemName"
-                                        class="border border-blue-400 dark:border-blue-700 rounded-lg px-2 py-1 w-full focus:ring-2 focus:ring-blue-400 text-right bg-white dark:bg-neutral-900 text-blue-900 dark:text-blue-100 transition duration-200 shadow-sm font-medium text-sm" />
+                                        class="border border-blue-400 dark:border-blue-700 rounded-lg px-0 py-1 w-full focus:ring-2 focus:ring-blue-400 text-right bg-white dark:bg-neutral-900 text-blue-900 dark:text-blue-100 transition duration-200 shadow-sm font-medium text-sm" />
                                 @else
                                     <span class="text-blue-900 dark:text-blue-100 font-semibold text-sm">{{ $item->name }}</span>
                                 @endif
                             </td>
-                            <td class="p-2 align-middle text-end">
+                            <td class="p-0 align-middle text-end">
                                 @if ($editItemId === $item->id)
                                     <button wire:click="saveEdit"
                                         class="px-2 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600 transition duration-200 font-semibold shadow-sm text-sm">حفظ</button>
                                     <button wire:click="cancelEdit"
                                         class="mr-1 px-2 py-1 rounded-lg bg-gray-300 text-gray-800 hover:bg-gray-400 transition duration-200 font-semibold shadow-sm text-sm">إلغاء</button>
                                 @else
+                                    <a href="{{ route('item.usage', $item) }}"
+                                        class="px-1 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition duration-200 font-semibold shadow-sm text-sm">سجل الاستخدام</a>
                                     <button wire:click="startEdit({{ $item->id }})"
-                                        class="px-2 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition duration-200 font-semibold shadow-sm text-sm">تعديل</button>
+                                        class="px-1 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition duration-200 font-semibold shadow-sm text-sm">تعديل</button>
                                     <button wire:click="deleteItem({{ $item->id }})"
-                                        class="mr-1 px-2 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition duration-200 font-semibold shadow-sm text-sm">حذف</button>
+                                        class="px-1 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition duration-200 font-semibold shadow-sm text-sm">حذف</button>
                                 @endif
                             </td>
                         </tr>
