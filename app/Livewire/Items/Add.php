@@ -32,6 +32,7 @@ class Add extends Component
                 'active' => false,
             ]);
             $this->reset(['item_name']);
+            $this->dispatch('reset-search');
         } catch (\Throwable $th) {
             dd($th);
             Log::error($th);
