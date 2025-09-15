@@ -4,7 +4,7 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-start gap-1 p-3">
+        <div class="bg-background flex min-h-vh flex-col items-center justify-start gap-1 p-3">
             <div class="flex w-full">
                 <div class="flex flex-col gap-1 w-full">
                     {{ $slot }}
