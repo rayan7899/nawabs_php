@@ -1,5 +1,5 @@
-<div class="p-3" dir="rtl">
-    <flux:heading size="lg" class="mb-1"> {{ __('اضافة تصنيف') }} </flux:heading>
+<div class="" dir="rtl">
+    <flux:heading size="xl" class="mb-1"> {{ __('اضافة تصنيف') }} </flux:heading>
     <flux:separator variant="subtle" class="mb-3" />
 
     <form wire:submit.prevent="save" class="mb-6">

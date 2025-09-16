@@ -1,4 +1,4 @@
-<div class="p-0 rounded-lg  w-full" dir="rtl" style="text-align: right;">
+<div class="p-0 rounded-lg w-full" dir="rtl" style="text-align: right;">
     <flux:heading size="xl" class="mb-1"> {{ __('ادارة العناصر') }} </flux:heading>
     <flux:separator variant="subtle" class="mb-3" />
     <div class="mb-4 flex flex-row-reverse items-center gap-2">
@@ -37,7 +37,7 @@
                         class="px-2 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition duration-200 font-semibold shadow-sm text-sm">تعديل القسم</button>
                 @endif
             </div>
-            <table class="w-full rounded-lg overflow-hidden  bg-white dark:bg-neutral-900 text-sm">
+            <table class="w-full rounded-lg overflow-hidden bg-white dark:bg-neutral-800 text-sm">
                 <tbody>
                     @forelse ($category->items as $item)
                         <tr class="border-b last:border-b-0 hover:bg-blue-100 dark:hover:bg-blue-900 transition duration-200">
