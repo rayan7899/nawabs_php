@@ -10,6 +10,9 @@ class Manage extends Component
     public $editItemId = null;
     public $editItemName = '';
     public $search = '';
+    public $editCategoryId = null;
+    public $editCategoryName = '';
+    public $editCategoryColor = '';
 
     public function deleteItem($itemId)
     {
@@ -38,6 +41,34 @@ class Manage extends Component
     {
         $this->editItemId = null;
         $this->editItemName = '';
+    }
+
+    public function startEditCategory($categoryId)
+    {
+        $category = Category::findOrFail($categoryId);
+        $this->editCategoryId = $categoryId;
+        $this->editCategoryName = $category->name;
+        $this->editCategoryColor = $category->color ?? '#3B82F6';
+    }
+
+    public function saveCategoryEdit()
+    {
+        $category = Category::findOrFail($this->editCategoryId);
+        $category->name = $this->editCategoryName;
+        $category->color = $this->editCategoryColor;
+        $category->save();
+        
+        $this->editCategoryId = null;
+        $this->editCategoryName = '';
+        $this->editCategoryColor = '';
+        session()->flash('message', 'تم تعديل القسم بنجاح.');
+    }
+
+    public function cancelCategoryEdit()
+    {
+        $this->editCategoryId = null;
+        $this->editCategoryName = '';
+        $this->editCategoryColor = '';
     }
 
     public function getFilteredCategoriesProperty()
