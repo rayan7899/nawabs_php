@@ -1,6 +1,8 @@
 <div class="p-3" dir="rtl">
-    <form wire:submit.prevent="save" class="mb-6">
+    <flux:heading size="lg" class="mb-1"> {{ __('اضافة تصنيف') }} </flux:heading>
+    <flux:separator variant="subtle" class="mb-3" />
 
+    <form wire:submit.prevent="save" class="mb-6">
         <div class="flex gap-1 w-full mb-2">
             <div class="flex-1">
                 <flux:input type="text" 
@@ -30,7 +32,7 @@
         @endif
     </form>
 
-    <div class="overflow-x-scroll">
+    {{-- <div class="overflow-x-scroll">
         <table class="min-w-full text-sm border border-zinc-200 dark:border-zinc-700 rounded text-right">
             <thead class="bg-zinc-100 dark:bg-zinc-700">
                 <tr>
@@ -57,5 +59,5 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </div> --}}
 </div>
