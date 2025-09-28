@@ -32,15 +32,11 @@ class Show extends Component
     public function render()
     {
         $categories = category::whereHas('items', function ($q){
-            $q->where('active', $this->shoppingMode);
-            if ($this->search) {
-                $q->where('name', 'like', '%' . $this->search . '%');
-            }
+            if($this->shoppingMode) $q->where('active', true);
+            if ($this->search) $q->where('name', 'like', '%' . $this->search . '%');
         })->with(['items' => function ($q) {
-            $q->where('active', $this->shoppingMode);
-            if ($this->search) {
-                $q->where('name', 'like', '%' . $this->search . '%');
-            }
+            if($this->shoppingMode) $q->where('active', true);
+            if ($this->search) $q->where('name', 'like', '%' . $this->search . '%');
         }])->orderBy('name')->get();
 
         return view('livewire.items.show', [
