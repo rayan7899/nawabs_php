@@ -141,7 +141,17 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/', ShowItems::class)->name('showItems');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', ShowItems::class)->name('showItems');
+    Route::get('/list/{list?}', ShowItems::class)->name('showItems.list');
+});
+
+// Register AdminOnly middleware
+app()->singleton('admin', \App\Http\Middleware\AdminOnly::class);
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('default-items', \App\Livewire\Admin\DefaultItems::class)->name('default-items');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -152,6 +162,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('items')->name('item.')->group(function () {
         Route::get('{item}/usage', Usage::class)->name('usage');
+    });
+
+    Route::prefix('lists')->name('lists.')->group(function () {
+        Route::get('{list}', \App\Livewire\Lists\ManageList::class)->name('manage');
     });
 });
 

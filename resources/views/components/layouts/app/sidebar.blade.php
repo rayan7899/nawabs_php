@@ -16,6 +16,10 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     <flux:navlist.item icon="list-bullet" :href="route('showItems')" :current="request()->routeIs('showItems')" wire:navigate>{{ __('Items') }}</flux:navlist.item>
                 </flux:navlist.group>
+                
+                @auth
+                    <livewire:lists.lists-sidebar />
+                @endauth
             </flux:navlist>
 
             <flux:spacer />
@@ -135,6 +139,10 @@
         </flux:header>
 
         {{ $slot }}
+
+        @auth
+            <livewire:lists.create-list />
+        @endauth
 
         @fluxScripts
     </body>

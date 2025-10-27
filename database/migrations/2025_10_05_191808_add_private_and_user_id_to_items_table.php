@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->boolean('active');
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
+        Schema::table('items', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('private')->default(false);
-            $table->timestamps();
-
-            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('CASCADE');
         });
     }
 
@@ -29,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::table('items', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn(['user_id', 'private']);
+        });
     }
 };

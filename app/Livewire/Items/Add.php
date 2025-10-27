@@ -18,24 +18,40 @@ class Add extends Component
         $this->categories = category::all();
     }
 
+    public function rules()
+    {
+        return [
+            'item_name' => ['required', 'string', 'unique:items,name'],
+            'category_id' => ['required', 'exists:categories,id'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'item_name.required' => 'يجب إدخال اسم العنصر.',
+            'item_name.unique' => 'هذا العنصر موجود مسبقاً.',
+            'category_id.required' => 'يجب اختيار تصنيف.',
+            'category_id.exists' => 'التصنيف المختار غير صالح.',
+        ];
+    }
+
     public function save()
     {
-        if (empty($this->item_name) || empty($this->category_id)) {
-            dd('لا يمكن ترك حقل اسم العنصر او التصنيف فارغ.');
-        }
-        if (Item::where('name', $this->item_name)->exists()) {
-            dd('العنصر موجود.');
-        }
+        $this->validate();
+
         try {
             category::find($this->category_id)->items()->create([
                 'name' => $this->item_name,
                 'active' => false,
             ]);
-            $this->reset(['item_name']);
+            
+            session()->flash('success', 'تم إضافة العنصر بنجاح.');
+            $this->reset(['item_name', 'category_id']);
             $this->dispatch('reset-search');
         } catch (\Throwable $th) {
-            dd($th);
             Log::error($th);
+            session()->flash('error', 'حدث خطأ أثناء إضافة العنصر.');
         }
     }
 
