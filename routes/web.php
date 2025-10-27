@@ -138,7 +138,7 @@ Route::get('/welcome', function () {
 })->name('home');
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'admin'])
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {

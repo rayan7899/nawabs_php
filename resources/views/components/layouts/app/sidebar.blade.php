@@ -13,8 +13,13 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="list-bullet" :href="route('showItems')" :current="request()->routeIs('showItems')" wire:navigate>{{ __('Items') }}</flux:navlist.item>
+                    @if(auth()->user()->is_admin)
+                        <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    @endif
+                    <flux:navlist.item icon="list-bullet" :href="route('showItems')" :current="request()->routeIs('showItems')" wire:navigate>{{ __('الأغراض') }}</flux:navlist.item>
+                    @if(auth()->user()->is_admin)
+                        <flux:navlist.item icon="adjustments-horizontal" href="/admin/default-items" :current="request()->is('admin/default-items')" wire:navigate>{{ __('Default Items') }}</flux:navlist.item>
+                    @endif
                 </flux:navlist.group>
                 
                 @auth
@@ -114,9 +119,10 @@
 
                     <flux:menu.separator />
 
-                    <flux:menu.item :href="route('dashboard')" icon="home" wire:navigate>{{ __('Dashboard') }}</flux:menu.item>
-
-                    <flux:menu.separator />
+                    @if(auth()->user()->is_admin)
+                        <flux:menu.item :href="route('dashboard')" icon="home" wire:navigate>{{ __('Dashboard') }}</flux:menu.item>
+                        <flux:menu.separator />
+                    @endif
 
                     <flux:menu.item :href="route('showItems')" icon="list-bullet" wire:navigate>{{ __('Items') }}</flux:menu.item>
 

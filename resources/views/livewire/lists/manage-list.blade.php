@@ -1,7 +1,6 @@
 <div>
     <div class="flex items-center justify-between mb-4">
         <div>
-            <flux:button icon="squares-2x2" href="/dashboard" />
             <flux:heading size="xl" level="1" class="ms-3 inline">{{ $list->name }}</flux:heading>
         </div>
     </div>

@@ -3,7 +3,7 @@
         <div class="flex items-center gap-4">
             <flux:heading size="xl" level="1" class="inline">{{ __('الأغراض') }}</flux:heading>
             @auth
-                <flux:button icon="squares-2x2" href="/dashboard" label="لوحة التحكم"  />
+                <flux:button icon="squares-2x2" :href="route('lists.manage', ['list'=>$selectedList])" label="لوحة التحكم"  />
             @else
                 <div class="flex gap-2">
                     <flux:button href="{{ route('login') }}" label="تسجيل الدخول"  />
