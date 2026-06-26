@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\ListTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -61,13 +63,14 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function lists(): HasMany
+    public function lists(): BelongsToMany
     {
-        return $this->hasMany(ItemList::class);
+        return $this->belongsToMany(ItemList::class, 'list_users', 'user_id', 'list_id')
+            ->withTimestamps();
     }
 
     public function defaultList()
     {
-        return $this->lists()->where('is_default', true)->first();
+        return $this->lists()->where('type', ListTypeEnum::DEFAULT->value)->first();
     }
 }

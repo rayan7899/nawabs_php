@@ -5,36 +5,33 @@ namespace App\Models;
 use App\Observers\ItemObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
+
 #[ObservedBy(ItemObserver::class)]
 class Item extends Model
 {
     protected $fillable = [
         'name',
-        'active',
-        'list_id',
-        'user_id',
         'category_id',
-        'private'
+        'type',
+        'created_by',
     ];
 
-    public function itemUsage()
+    protected static function booted()
+    {
+        static::creating(function ($item) {
+            $item->created_by = Auth::id();
+        });
+    }
+
+    public function itemUsage(): HasMany
     {
         return $this->hasMany(ItemUsage::class);
     }
 
-    public function lists()
-    {
-        return $this->belongsToMany(ItemList::class, 'item_list')
-                    ->withPivot('active')
-                    ->withTimestamps();
-    }
-    
-    public function list()
-    {
-        return $this->belongsTo(ItemList::class, 'list_id');
-    }
-
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }

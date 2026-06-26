@@ -2,19 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class category extends Model
 {
-    protected $fillable = ['name', 'color'];
+    protected $fillable = [
+        'name',
+        'color',
+        'created_by',
+    ];
 
-    public function items()
+    protected static function booted()
     {
-        return $this->hasMany(Item::class);
+        static::creating(function ($category) {
+            $category->created_by = Auth::id();
+        });
     }
 
-    public function getColorAttribute($value)
+    protected function color(): Attribute
     {
-        return $value ?: '#000000'; // Default color if not set
+        return Attribute::make(
+            get: fn ($value) => $value ?? null,
+        );
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
     }
 }

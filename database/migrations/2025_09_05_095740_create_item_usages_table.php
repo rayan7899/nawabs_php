@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('item_usages', function (Blueprint $table) {
             $table->id();
-            $table->integer('action'); // use ItemUsageActions enum values
-            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->unsignedSmallInteger('action'); // use ItemUsageActions enum values
+            $table->foreignId('list_items_id')->references('id')->on('list_items')->onDelete('cascade');
+            $table->foreignId('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

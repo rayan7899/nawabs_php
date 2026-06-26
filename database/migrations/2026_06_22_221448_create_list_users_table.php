@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_list', function (Blueprint $table) {
-            $table->foreignId('item_id')->constrained()->onDelete('cascade');
-            $table->foreignId('item_list_id')->constrained()->onDelete('cascade');
-            $table->boolean('active')->default(false);
+        Schema::create('list_users', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('list_id')->references('id')->on('lists')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedSmallInteger('role');
             $table->timestamps();
-
-            $table->primary(['item_id', 'item_list_id']);
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_list');
+        Schema::dropIfExists('list_users');
     }
 };

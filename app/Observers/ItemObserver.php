@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\ItemUsageActions;
 use App\Models\Item;
+use Illuminate\Support\Facades\Auth;
 
 class ItemObserver
 {
@@ -20,12 +21,10 @@ class ItemObserver
      */
     public function updated(Item $item): void
     {
-        /**
-         * Log the change in item usage
-         */
-        if($item->wasChanged('active')) {
+        if($item->wasChanged('need_at')) {
             $item->itemUsage()->create([
-                'action' => $item->active ? ItemUsageActions::ADD->value : ItemUsageActions::REMOVE->value,
+                'action' => $item->need_at === null ? ItemUsageActions::REMOVE->value : ItemUsageActions::ADD->value,
+                'created_by' => Auth::id(),
             ]);
         }
     }
