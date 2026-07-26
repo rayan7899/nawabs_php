@@ -3,5 +3,5 @@
 return [
     App\Providers\AppServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
-    App\Providers\ItemListServiceProvider::class,
+    App\Providers\ListServiceProvider::class,
 ];

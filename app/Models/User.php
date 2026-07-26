@@ -4,13 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\ListTypeEnum;
+use App\Enums\ListTypeEnum;
+use App\Enums\ListUserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-
+/**
+ * @method static \App\Models\ItemList[] lists()
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -63,9 +66,11 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function lists(): BelongsToMany
+    public function lists($status = [ListUserStatusEnum::ACCEPTED->value]): BelongsToMany
     {
         return $this->belongsToMany(ItemList::class, 'list_users', 'user_id', 'list_id')
+            ->using(ListUser::class)
+            ->wherePivotIn('status', $status)
             ->withTimestamps();
     }
 

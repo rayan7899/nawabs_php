@@ -2,7 +2,8 @@
 
 namespace App\Livewire\Items;
 
-use App\Models\category;
+use App\Enums\ItemTypeEnum;
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -15,7 +16,7 @@ class Add extends Component
 
     public function mount()
     {
-        $this->categories = category::all();
+        $this->categories = Category::all();
     }
 
     public function rules()
@@ -41,9 +42,9 @@ class Add extends Component
         $this->validate();
 
         try {
-            category::find($this->category_id)->items()->create([
+            Category::find($this->category_id)->items()->create([
                 'name' => $this->item_name,
-                'active' => false,
+                'type' => ItemTypeEnum::DEFAULT->value,
             ]);
             
             session()->flash('success', 'تم إضافة العنصر بنجاح.');

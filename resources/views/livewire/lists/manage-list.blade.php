@@ -1,4 +1,7 @@
 <div>
+    
+</div>
+{{-- <div>
     <div class="flex items-center justify-between mb-4">
         <div>
             <flux:heading size="xl" level="1" class="ms-3 inline">{{ $list->name }}</flux:heading>
@@ -132,4 +135,4 @@
             @endif
         </div>
     </div>
-</div>
+</div> --}}

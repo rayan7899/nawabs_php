@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Category;
 
-use App\Models\category;
+use App\Models\Category;
 use Livewire\Component;
 
 class Manage extends Component
@@ -25,18 +25,18 @@ class Manage extends Component
 
     public function fetchCategories()
     {
-        $this->categories = category::all();
+        $this->categories = Category::all();
     }
 
     public function save()
     {
         $this->validate();
-        if (category::where('name', $this->name)->where('id', '!=', $this->category_id)->exists()) {
+        if (Category::where('name', $this->name)->where('id', '!=', $this->category_id)->exists()) {
             session()->flash('error', 'التصنيف موجود.');
             return;
         }
         if ($this->isEdit && $this->category_id) {
-            $cat = category::find($this->category_id);
+            $cat = Category::find($this->category_id);
             if ($cat) {
                 $cat->update([
                     'name' => $this->name,
@@ -44,7 +44,7 @@ class Manage extends Component
                 ]);
             }
         } else {
-            category::create([
+            Category::create([
                 'name' => $this->name,
                 'color' => $this->color,
             ]);
@@ -55,7 +55,7 @@ class Manage extends Component
 
     public function edit($id)
     {
-        $cat = category::find($id);
+        $cat = Category::find($id);
         if ($cat) {
             $this->category_id = $cat->id;
             $this->name = $cat->name;
@@ -66,7 +66,7 @@ class Manage extends Component
 
     public function delete($id)
     {
-        $cat = category::find($id);
+        $cat = Category::find($id);
         if ($cat) {
             $cat->delete();
             $this->fetchCategories();

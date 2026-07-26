@@ -2,45 +2,66 @@
 
 namespace App\Livewire\Lists;
 
+use App\Livewire\Forms\ListForm;
 use Livewire\Component;
-use App\Models\ItemList;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
 class ListsSidebar extends Component
 {
-    public $newListName = '';
+    const LIST_COUNT_LIMIT = 3;
+
     public $isAddingList = false;
+    public User $user;
+    public ListForm $listForm;
+
+    function mount()
+    {
+        $this->user = Auth::user();
+        $this->listForm->setUser($this->user);
+    }
 
     public function getUserListsProperty()
     {
-        return Auth::user()->lists;
+        return $this->user->lists;
     }
 
     public function startAddingList()
     {
+        if ($this::LIST_COUNT_LIMIT <= count($this->user->lists)) {
+            LivewireAlert::title(__('Can not add new list.'))
+                ->text(__('You have reached the maximum number of lists allowed.'))
+                ->error()
+                ->asToast()
+                ->timer(10000)
+                ->show();
+            return;
+        }
         $this->isAddingList = true;
     }
 
     public function cancelAddingList()
     {
         $this->isAddingList = false;
-        $this->newListName = '';
+        $this->listForm->name = '';
     }
 
     public function createList()
     {
-        $this->validate([
-            'newListName' => 'required|min:3'
-        ]);
+        if ($this::LIST_COUNT_LIMIT <= count($this->user->lists)) {
+            LivewireAlert::title(__('Can not add new list.'))
+                ->text(__('You have reached the maximum number of lists allowed.'))
+                ->error()
+                ->asToast()
+                ->timer(10000)
+                ->show();
+            return;
+        }
 
-        ItemList::create([
-            'user_id' => Auth::id(),
-            'name' => $this->newListName,
-            'is_default' => false
-        ]);
-
-        $this->newListName = '';
+        $this->listForm->create();
         $this->isAddingList = false;
+        $this->user->load('lists');
     }
 
     public function render()

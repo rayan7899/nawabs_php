@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class ListUser extends Pivot
 {
     protected $fillable = [
+        'status',
         'role'
     ];
 

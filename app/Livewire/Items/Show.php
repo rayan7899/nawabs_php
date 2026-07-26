@@ -5,8 +5,10 @@ namespace App\Livewire\Items;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\ItemList;
+use App\Models\ListItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Session;
 use Livewire\Component;
@@ -16,7 +18,7 @@ class Show extends Component
 {
     public $search = '';
     #[Session('selectedList')]
-    public $selectedList = null;
+    public $selectedList;
     #[Session('shoppingMode')]
     public $shoppingMode = false;
 
@@ -53,25 +55,24 @@ class Show extends Component
 
     public function toggleItem(Item $item)
     {
-        if (!$this->selectedList || !Auth::check()) {
+        if (!$item) {
+            LivewireAlert::title(__('Item not found.'))
+                ->warning()->timerProgressBar()->show();
+            return;
+        }
+
+        $listItem = ListItem::where('list_id', $this->selectedList)->where('item_id', $item->id)->first();
+        if (!$listItem) {
+            LivewireAlert::title(__('Item not found in the list.'))
+                ->warning()->timerProgressBar()->show();
             return;
         }
 
         try {
-            $list = ItemList::findOrFail($this->selectedList);
-            
-            if ($list->user_id !== Auth::id()) {
-                abort(403);
-            }
-
-            $existingItem = $list->items()->where('item_id', $item->id)->first();
-            
-            if ($existingItem) {
-                $newActive = !$existingItem->pivot->active;
-                $list->items()->updateExistingPivot($item->id, ['active' => $newActive]);
-            } else {
-                $list->items()->attach($item->id, ['active' => false]);
-            }
+            $listItem->update([
+                'need_at' => $listItem->need_at ? null : now(),
+                'needed_by' => $listItem->needed_by ? null : Auth::id(),
+            ]);
         } catch (\Throwable $th) {
             Log::error($th);
             session()->flash('error', 'حدث خطأ أثناء تحديث الغرض');
@@ -80,38 +81,11 @@ class Show extends Component
 
     public function render()
     {
-        $categories = collect();
         $lists = Auth::check() ? Auth::user()->lists : collect();
 
-        if ($this->selectedList && Auth::check()) {
-            $list = ItemList::with(['items' => function($q) {
-                $q->when($this->search, function($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%');
-                });
-                $q->with('category');
-            }])->findOrFail($this->selectedList);
-
-            $items = $list->items;
-            
-            if ($this->shoppingMode) {
-                $items = $items->filter(function($item) {
-                    return $item->pivot->active;
-                });
-            }
-
-            $categorizedItems = $items->groupBy('category.id');
-            
-            $categories = Category::whereIn('id', $categorizedItems->keys())
-                ->get()
-                ->map(function($category) use ($categorizedItems) {
-                    $category->setRelation('items', collect($categorizedItems->get($category->id)));
-                    return $category;
-                })
-                ->sortBy('name');
-        }
-
+        $list = ItemList::find($this->selectedList);
         return view('livewire.items.show', [
-            'categories' => $categories,
+            'categories' => $list->categoriesWithItems,
             'lists' => $lists,
         ]);
     }

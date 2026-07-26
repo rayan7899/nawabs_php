@@ -19,7 +19,9 @@ class ListItem extends Pivot
     protected static function booted()
     {
         static::creating(function ($listItem) {
-            $listItem->created_by = Auth::id();
+            if (!$listItem->created_by) {
+                $listItem->created_by = Auth::id();
+            }
         });
     }
 

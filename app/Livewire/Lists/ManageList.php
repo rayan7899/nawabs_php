@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Lists;
 
+use App\Enums\ItemTypeEnum;
 use Livewire\Component;
 use App\Models\ItemList;
 use App\Models\Item;
@@ -19,7 +20,7 @@ class ManageList extends Component
     public function mount(ItemList $list)
     {
         $this->list = $list;
-        if (!$this->list->user_id === Auth::id()) {
+        if (!$this->list->created_by === Auth::id()) {
             abort(403);
         }
     }
@@ -42,7 +43,7 @@ class ManageList extends Component
 
     public function addItemToList($itemId)
     {
-        $this->list->items()->syncWithoutDetaching([$itemId]);
+        $this->list->items()->attach($itemId, ['status' => 1]);
         $this->dispatch('item-added');
     }
 
@@ -66,13 +67,11 @@ class ManageList extends Component
 
         $item = Item::create([
             'name' => $this->newItemName,
-            'user_id' => Auth::id(),
             'category_id' => $this->newItemCategoryId,
-            'private' => true,
-            'active' => false,
+            'type' => ItemTypeEnum::CUSTOM->value,
         ]);
 
-        $this->list->items()->attach($item->id);
+        $this->list->items()->attach($item->id, ['status' => 1]);
         $this->newItemName = '';
         $this->newItemCategoryId = null;
         $this->dispatch('item-added');

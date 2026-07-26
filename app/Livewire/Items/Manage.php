@@ -2,7 +2,7 @@
 namespace App\Livewire\Items;
 
 use Livewire\Component;
-use App\Models\category;
+use App\Models\Category;
 use App\Models\Item;
 
 class Manage extends Component

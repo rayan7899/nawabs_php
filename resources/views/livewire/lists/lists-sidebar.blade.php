@@ -1,5 +1,5 @@
 <div>
-    <flux:navlist.group :heading="__('القوائم')" class="grid gap-1" :expandable="true">
+    <flux:navlist.group :heading="__('Lists')" class="grid gap-1" :expandable="true">
         @foreach($this->userLists as $list)
             <flux:navlist.item 
                 icon="list-bullet" 
@@ -14,10 +14,10 @@
             <div class="px-2 py-1 space-y-2">
                 <flux:input
                     type="text"
-                    wire:model="newListName"
+                    wire:model="listForm.name"
                     wire:keydown.enter="createList"
                     wire:keydown.escape="cancelAddingList"
-                    placeholder="{{ __('اسم القائمة') }}"
+                    placeholder="{{ __('List Name') }}"
                     class="w-full text-sm"
                     autofocus
                 />
@@ -40,7 +40,7 @@
                 wire:click="startAddingList"
                 class="text-blue-600 dark:text-blue-400"
             >
-                {{ __('إضافة قائمة جديدة') }}
+                {{ __('Add new list') }}
             </flux:navlist.item>
         @endif
     </flux:navlist.group>

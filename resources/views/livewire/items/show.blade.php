@@ -72,7 +72,7 @@
                             wire:loading.class="opacity-50"
                             wire:target="toggleItem({{ $item->id }})"
                             :label="$item->name" 
-                            :active="$item->pivot->active"
+                            :active="$item->pivot->need_at ? true : false"
                             wire:key='{{ $item->id }}' 
                             :id="$item->id" 
                             class="flex-stretch hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors" />

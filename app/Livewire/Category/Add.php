@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Category;
 
-use App\Models\category;
+use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -15,11 +15,11 @@ class Add extends Component
         if (empty($this->category_name)) {
             dd('لا يمكن ترك حقل اسم التصنيف فارغ.');
         }
-        if (category::where('name', $this->category_name)->exists()) {
+        if (Category::where('name', $this->category_name)->exists()) {
             dd('التصنيف موجود.');
         }
         try {
-            category::create([
+            Category::create([
                 'name' => $this->category_name,
                 'color' => '#000000',
             ]);

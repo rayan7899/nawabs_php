@@ -1,8 +1,10 @@
 <?php
 
+use App\Livewire\Invitations\Invite;
 use App\Livewire\Items\Show as ShowItems;
 use App\Livewire\Items\Usage;
-use App\Models\category;
+use App\Livewire\Lists\Categories;
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -122,7 +124,7 @@ Route::get('seed', function () {
     ];
     dump('waiting...');
     foreach ($categories as $category) {
-        $cat = category::firstOrCreate([
+        $cat = Category::firstOrCreate([
             'name' => $category['name'],
             'color' => $category['color'],
         ]);
@@ -133,10 +135,6 @@ Route::get('seed', function () {
     dd('done');
 })->name('seed');
 
-Route::get('/welcome', function () {
-    return view('welcome');
-})->name('home');
-
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'admin'])
     ->name('dashboard');
@@ -146,12 +144,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/list/{list?}', ShowItems::class)->name('showItems.list');
 });
 
-// Register AdminOnly middleware
-app()->singleton('admin', \App\Http\Middleware\AdminOnly::class);
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('default-items', \App\Livewire\Admin\DefaultItems::class)->name('default-items');
-});
+})->name('admin.');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -165,7 +160,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('lists')->name('lists.')->group(function () {
-        Route::get('{list}', \App\Livewire\Lists\ManageList::class)->name('manage');
+        Route::get('{list}', Categories::class)->name('manage');
+
+        Route::get('{listId}/invitations', Invite::class)->name('invite');
     });
 });
 
