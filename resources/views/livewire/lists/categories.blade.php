@@ -9,15 +9,13 @@
 
     <div class="flex justify-between mt-3">
         <flux:button.group>
-            <flux:button size="sm" class="cursor-pointer">{{__("New Category")}}</flux:button>
-            <flux:button size="sm" class="cursor-pointer">{{__("New Item")}}</flux:button>
+            <flux:button :href="route('lists.newItem', $list->id)" size="sm" class="cursor-pointer">{{__("New Item")}}</flux:button>
+            @if($list->type != App\Enums\ListTypeEnum::DEFAULT->value)
+                <flux:button href="{{ route('lists.invite', $list) }}" size="sm" wire:navigate>
+                    {{__("Invite User")}}
+                </flux:button>
+            @endif
         </flux:button.group>
-
-        @if($list->type != App\Enums\ListTypeEnum::DEFAULT->value)
-            <flux:button href="{{ route('lists.invite', $list) }}" size="sm" wire:navigate>
-                {{__("Invite User")}}
-            </flux:button>
-        @endif
     </div>
     
 

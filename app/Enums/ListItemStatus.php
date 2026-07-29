@@ -8,4 +8,5 @@ namespace App\Enums;
 enum ListItemStatus: int
 {
     case DEFAULT = 1;
+    case CUSTOM = 2;
 }

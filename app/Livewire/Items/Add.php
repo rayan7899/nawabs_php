@@ -2,74 +2,67 @@
 
 namespace App\Livewire\Items;
 
-use App\Enums\ItemTypeEnum;
-use App\Models\Category;
-use App\Models\Item;
+use App\Enums\ListItemStatus;
+use App\Livewire\Forms\CategoryForm;
+use App\Livewire\Forms\ItemForm;
+use App\Models\ItemList;
+use App\Models\ListItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 
 class Add extends Component
 {
-    public $item_name;
-    public $category_id = '';
-    public $categories = [];
+    public ItemList $list;
+    public ItemForm $itemForm;
+    public CategoryForm $categoryForm;
 
-    public function mount()
+    public function mount(ItemList $listId)
     {
-        $this->categories = Category::all();
+        $this->list = $listId;
     }
 
-    public function rules()
-    {
-        return [
-            'item_name' => ['required', 'string', 'unique:items,name'],
-            'category_id' => ['required', 'exists:categories,id'],
-        ];
+    public function setCategoryId(): bool {
+        $category = $this->categoryForm->firstOrCreate(); // get category
+        if ($category) {
+            $this->itemForm->category_id = $category->id; // if got category assign its id to item form
+            return true;
+        }else {
+            LivewireAlert::title(__('Error while getting category.'))
+                ->error()->timerProgressBar()->show();
+            DB::rollBack();
+            Log::error("Error while getting category. \n in ". __FILE__ . ':' . __LINE__);
+            return false;
+        }
     }
 
-    public function messages()
+    public function add(): void
     {
-        return [
-            'item_name.required' => 'يجب إدخال اسم العنصر.',
-            'item_name.unique' => 'هذا العنصر موجود مسبقاً.',
-            'category_id.required' => 'يجب اختيار تصنيف.',
-            'category_id.exists' => 'التصنيف المختار غير صالح.',
-        ];
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        try {
-            Category::find($this->category_id)->items()->create([
-                'name' => $this->item_name,
-                'type' => ItemTypeEnum::DEFAULT->value,
+        DB::beginTransaction();
+        $this->setCategoryId();
+        $newItem = $this->itemForm->firstOrCreate(); // get item if exists or create new one 
+        if ($newItem) {
+            if(ListItem::where('list_id', $this->list->id)->where('item_id', $newItem->id)->exists())
+            {
+                LivewireAlert::title(__('Item is already added before.'))
+                ->warning()->timerProgressBar()->show();
+                return;
+            }
+            $this->list->items()->syncWithoutDetaching([
+                $newItem->id => ['status' => ListItemStatus::CUSTOM->value]
             ]);
-            
-            session()->flash('success', 'تم إضافة العنصر بنجاح.');
-            $this->reset(['item_name', 'category_id']);
-            $this->dispatch('reset-search');
-        } catch (\Throwable $th) {
-            Log::error($th);
-            session()->flash('error', 'حدث خطأ أثناء إضافة العنصر.');
-        }
-    }
-
-    public function delete()
-    {
-        if (empty($this->item_name)) {
-            dd('لا يمكن ترك حقل اسم العنصر فارغ.');
-        }
-        if (!Item::where('name', $this->item_name)->exists()) {
-            dd('العنصر غير موجود.');
-        }
-        try {
-            Item::where('name', $this->item_name)->delete();
-            $this->item_name = '';
-        } catch (\Throwable $th) {
-            Log::error($th);
-            dd('Error updating item: ' . $th->getMessage());
+            LivewireAlert::title(__('Item added successfully.'))
+                ->success()->asToast()->show();
+            $this->reset(['itemForm.name', 'categoryForm.name']);
+            DB::commit();
+            return;
+        } else {
+            LivewireAlert::title(__('Error while adding new item.'))
+                ->error()->show();
+            DB::rollBack();
+            Log::error("Error while adding new item. \n in ". __FILE__ . ':' . __LINE__);
+            return;
         }
     }
 
