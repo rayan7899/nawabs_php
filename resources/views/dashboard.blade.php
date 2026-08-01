@@ -1,12 +1,12 @@
 <x-layouts.app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-8 rounded-3xl p-lg-8">
         <div class="grid auto-rows-min gap-8 md:grid-cols-2">
-            <div class="relative rounded-2xl bg-white dark:bg-neutral-800 shadow-xl p-4 transition hover:shadow-2xl">
+            {{-- <div class="relative rounded-2xl bg-white dark:bg-neutral-800 shadow-xl p-4 transition hover:shadow-2xl">
                 <livewire:items.add/>
             </div>
             <div class="relative rounded-2xl bg-white dark:bg-neutral-800 shadow-xl p-4 transition hover:shadow-2xl">
                 <livewire:category.manage />
-            </div>
+            </div> --}}
         </div>
         <div class="relative w-full rounded-2xl bg-white dark:bg-neutral-800 shadow-xl p-4 transition hover:shadow-2xl">
             <livewire:items.manage />

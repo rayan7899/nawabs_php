@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Observers\ListItemObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Auth;
 
+#[ObservedBy(ListItemObserver::class)]
 class ListItem extends Pivot
 {
     protected $table = 'list_items';
@@ -25,6 +27,11 @@ class ListItem extends Pivot
         });
     }
 
+    public function itemUsages()
+    {
+        return $this->hasMany(ItemUsage::class, 'list_items_id');
+    }
+
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id');
@@ -33,5 +40,10 @@ class ListItem extends Pivot
     public function list()
     {
         return $this->belongsTo(ItemList::class, 'list_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'crated_by');
     }
 }

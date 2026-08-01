@@ -65,6 +65,10 @@
     "Add new custom item to selected list to use it in future.": "أضف عنصرًا مخصصًا جديدًا إلى القائمة المحددة لاستخدامه في المستقبل.",
     "Start typing to find items": "ابدأ الكتابة للعثور على الأغراض",
     "Start typing to find categories": "ابدأ الكتابة للعثور على التصنيفات",
+
+    "Usage":"سجل الإستخدام",
+    "No item's usages recorded.":"لا يوجد سجل استخدام لهذا العنصر.",
+
     "My List": "قائمتي",
     "My Lists": "قوائمي",
     "Settings": "الإعدادات",

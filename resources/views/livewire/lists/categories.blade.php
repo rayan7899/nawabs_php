@@ -9,7 +9,7 @@
 
     <div class="flex justify-between mt-3">
         <flux:button.group>
-            <flux:button :href="route('lists.newItem', $list->id)" size="sm" class="cursor-pointer">{{__("New Item")}}</flux:button>
+            <flux:button :href="route('lists.newItem', $list->id)" size="sm" class="cursor-pointer" wire:navigate>{{__("New Item")}}</flux:button>
             @if($list->type != App\Enums\ListTypeEnum::DEFAULT->value)
                 <flux:button href="{{ route('lists.invite', $list) }}" size="sm" wire:navigate>
                     {{__("Invite User")}}
@@ -34,9 +34,14 @@
                         <flux:separator class="my-0" />
                         <div class="flex items-center justify-between p-2 m-0">
                             <span>{{ $item->name }}</span>
+                            <flux:button variant="ghost" size="sm" icon="presentation-chart-line"
+                                :href="route('item.usage', [$item, 'li' => $list->id])" wire:navigate
+                                class="ms-auto"
+                                aria-label="{{__('Usage')}}" />
                             <flux:button variant="ghost" size="sm" icon="trash"
                                 wire:click="removeItemFromList({{ $item->id }})"
-                                class="text-red-500 hover:text-red-600" />
+                                class="text-red-500 hover:text-red-600 cursor-pointer"
+                                aria-label="{{__('Remove Item')}}" />
                         </div>
                     @endforeach
                 </div>

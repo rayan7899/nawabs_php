@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\ItemUsageActions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ItemUsage extends Model
 {
@@ -13,8 +14,22 @@ class ItemUsage extends Model
         'action' => ItemUsageActions::class,
     ];
 
-    public function item()
+    protected static function booted()
     {
-        return $this->belongsTo(Item::class);
+        static::creating(function ($listItem) {
+            if (!$listItem->created_by) {
+                $listItem->created_by = Auth::id();
+            }
+        });
+    }
+
+    public function listItem()
+    {
+        return $this->belongsTo(ListItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

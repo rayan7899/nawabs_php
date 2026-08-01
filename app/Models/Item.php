@@ -6,7 +6,7 @@ use App\Observers\ItemObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Auth;
 
 #[ObservedBy(ItemObserver::class)]
@@ -26,9 +26,9 @@ class Item extends Model
         });
     }
 
-    public function itemUsage(): HasMany
+    public function itemUsages(): HasManyThrough
     {
-        return $this->hasMany(ItemUsage::class);
+        return $this->hasManyThrough(ItemUsage::class, ListItem::class, 'item_id', 'list_items_id');
     }
 
     public function category(): BelongsTo
