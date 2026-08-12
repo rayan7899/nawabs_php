@@ -41,12 +41,17 @@ class ItemList extends Model
             ->withTimestamps();
     }
 
-    public function users($status = [ListUserStatusEnum::PENDING->value, ListUserStatusEnum::ACCEPTED->value, ListUserStatusEnum::REJECTED->value]): BelongsToMany
+    public function users($status = [ListUserStatusEnum::PENDING->value, ListUserStatusEnum::ACCEPTED->value, ListUserStatusEnum::REJECTED->value, ListUserStatusEnum::CANCELLED->value]): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'list_users', 'list_id', 'user_id')
             ->using(ListUser::class)
             ->withPivot('role', 'status')
             ->withTimestamps()
             ->wherePivotIn('status', $status);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

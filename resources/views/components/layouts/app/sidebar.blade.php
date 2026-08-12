@@ -26,6 +26,12 @@
                 </flux:navlist.group>
                 
                 @auth
+                    <flux:navlist.item icon="adjustments-horizontal"
+                        :href="route('invitations.show')" :current="request()->routeIs('invitations.show')" wire:navigate
+                        badge="{{auth()->user()->invitations->count()}}" badge-color="red">
+                        {{ __('Invitations') }}
+                    </flux:navlist.item>
+
                     <livewire:lists.lists-sidebar />
                 @endauth
             </flux:navlist>
@@ -119,6 +125,8 @@
 
                     <flux:menu.item :href="route('showItems')" icon="list-bullet" wire:navigate>{{ __('Items') }}</flux:menu.item>
 
+                    <flux:menu.separator />
+                    <flux:menu.item :href="route('invitations.show')" icon="adjustments-horizontal" wire:navigate> {{ __('Invitations') }} </flux:menu.item>
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>

@@ -16,8 +16,13 @@ return new class extends Migration
             $table->foreignId('list_id')->references('id')->on('lists')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedSmallInteger('status');  // get value from ListUserStatusEnum
+            $table->timestamp('status_changed_at')->nullable();
             $table->unsignedSmallInteger('role');
+            $table->timestamp('role_changed_at')->nullable();
+            $table->string('color');
             $table->timestamps();
+
+            $table->unique(['list_id', 'user_id', 'status']);
         });
     }
 

@@ -19,6 +19,8 @@ class Invite extends Component
     public ItemList $list;
     #[Validate('required|email|exists:users,email')]
     public string $invitedUser;
+    #[Validate('required|in:'.ListUserRoleEnum::EDITOR->value.','.ListUserRoleEnum::VIEWER->value)]
+    public $role;
 
     public function mount($listId)
     {
@@ -30,10 +32,12 @@ class Invite extends Component
                 ->warning()->timer(8000)->timerProgressBar()->show();
             return;
         }
+        $this->role = ListUserRoleEnum::EDITOR->value;
     }
 
     public function sendInvitation()
     {
+        $this->authorize('invite', $this->list);
         $this->validate();
         try {
             $user = User::where('email', $this->invitedUser)->first();
@@ -56,10 +60,11 @@ class Invite extends Component
             }
 
             $this->list->users()->attach($user,[
-                'role'      => ListUserRoleEnum::EDITOR->value,
+                'role'      => $this->role,
                 'status'    => ListUserStatusEnum::PENDING->value,
             ]);
             $this->reset('invitedUser');
+            $this->dispatch('refreshInvitees');
             LivewireAlert::title(__('Invitation sent successfully.'))
                 ->success()->asToast()->show();
         } catch (\Throwable $th) {

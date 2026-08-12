@@ -36,5 +36,29 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@test.com',
             'is_admin' => false,
         ]);
+        // Create regular test user
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test2@test.com',
+            'is_admin' => false,
+        ]);
+        // Create regular test user
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test3@test.com',
+            'is_admin' => false,
+        ]);
+        // Create regular test user
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test4@test.com',
+            'is_admin' => false,
+        ]);
+        // Create regular test user
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test5@test.com',
+            'is_admin' => false,
+        ]);
     }
 }

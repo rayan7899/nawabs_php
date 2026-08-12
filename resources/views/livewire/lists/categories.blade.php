@@ -10,12 +10,24 @@
     <div class="flex justify-between mt-3">
         <flux:button.group>
             <flux:button :href="route('lists.newItem', $list->id)" size="sm" class="cursor-pointer" wire:navigate>{{__("New Item")}}</flux:button>
-            @if($list->type != App\Enums\ListTypeEnum::DEFAULT->value)
+            @if($list->type != App\Enums\ListTypeEnum::DEFAULT->value && $list->created_by == auth()->user()->id)
                 <flux:button href="{{ route('lists.invite', $list) }}" size="sm" wire:navigate>
                     {{__("Invite User")}}
                 </flux:button>
             @endif
         </flux:button.group>
+
+        <!-- the list's members -->
+        @if($list->users([App\Enums\ListUserStatusEnum::ACCEPTED->value])->count() > 1)
+            <flux:avatar.group class="me-2">
+                @foreach($list->users([App\Enums\ListUserStatusEnum::ACCEPTED->value])->limit(2)->get() as $user)
+                    <flux:avatar color="auto" color:seed="{{$user->id}}" name="{{ $user->name }}"/>
+                @endforeach
+                @if ($list->users([App\Enums\ListUserStatusEnum::ACCEPTED->value])->count() > 2)
+                    <flux:avatar name="+{{ $list->users([App\Enums\ListUserStatusEnum::ACCEPTED->value])->count() - 2 }}"/>
+                @endif
+            </flux:avatar.group>
+        @endif
     </div>
     
 

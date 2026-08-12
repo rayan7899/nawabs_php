@@ -44,6 +44,6 @@ class ListItem extends Pivot
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'crated_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

@@ -4,6 +4,7 @@ use App\Livewire\Invitations\Invite;
 use App\Livewire\Items\Add as AddItem;
 use App\Livewire\Items\Show as ShowItems;
 use App\Livewire\Items\Usage;
+use App\Livewire\Invitations\Show as ShowInvitations;
 use App\Livewire\Lists\Categories;
 use App\Models\Category;
 use App\Models\Item;
@@ -165,6 +166,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('{listId}/invitations', Invite::class)->name('invite');
         Route::get('{listId}/newItem', AddItem::class)->name('newItem');
+    });
+
+    Route::prefix('invitations')->name('invitations.')->group(function () {
+        Route::get('/', ShowInvitations::class)->name('show');
     });
 });
 

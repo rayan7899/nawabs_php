@@ -8,6 +8,7 @@ use App\Enums\ListTypeEnum;
 use App\Enums\ListUserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -72,6 +73,12 @@ class User extends Authenticatable
             ->using(ListUser::class)
             ->wherePivotIn('status', $status)
             ->withTimestamps();
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(ListUser::class, 'user_id')
+            ->where('status', ListUserStatusEnum::PENDING->value);
     }
 
     public function defaultList()

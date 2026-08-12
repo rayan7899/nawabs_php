@@ -2,11 +2,10 @@
     <flux:navlist.group :heading="__('Lists')" class="grid gap-1" :expandable="true">
         @foreach($this->userLists as $list)
             <flux:navlist.item 
-                icon="list-bullet" 
+                icon="{{$list->users([App\Enums\ListUserStatusEnum::ACCEPTED->value])->count() > 1 ? 'user-group' : 'list-bullet'}}" 
                 :href="route('lists.manage', $list)" 
-                :current="request()->route('list') == $list"
-                wire:navigate
-            >
+                :current="request()->route('list') && request()->route('list')->id === $list->id"
+                wire:navigate>
                 {{ $list->name }}
             </flux:navlist.item>
         @endforeach
@@ -23,10 +22,10 @@
                 />
                 <div class="flex gap-1 justify-end">
                     <flux:button size="xs" variant="ghost" wire:click="cancelAddingList" class="px-2">
-                        {{ __('إلغاء') }}
+                        {{ __('Cancel') }}
                     </flux:button>
                     <flux:button size="xs" wire:click="createList" class="px-2">
-                        {{ __('إضافة') }}
+                        {{ __('Add') }}
                     </flux:button>
                 </div>
                 @error('newListName')
