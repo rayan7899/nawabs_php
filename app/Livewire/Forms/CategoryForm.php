@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -14,7 +15,7 @@ class CategoryForm extends Form
     protected function rules()
     {
         return [
-            'name'      => ['required', 'string', 'min:3', 'max:128'],
+            'name'      => ['required', 'string', 'min:3', 'max:20'],
             'color'     => ['required', 'hex_color'],
         ];
     }
@@ -37,7 +38,7 @@ class CategoryForm extends Form
                 ]
             );
         } catch (\Throwable $th) {
-            throw $th; // TODO: remove it
+            Log::critical($th);
             return false;
         }
     }

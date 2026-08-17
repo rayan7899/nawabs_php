@@ -14,6 +14,7 @@ class ListItem extends Pivot
     protected $fillable = [
         'need_at',
         'needed_by',
+        'quantity',
         'status',
         'created_by',
     ];

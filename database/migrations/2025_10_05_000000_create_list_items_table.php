@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('status');
             $table->timestamp('need_at')->nullable();
             $table->foreignId('needed_by')->nullable()->references('id')->on('users')->nullOnDelete();
+            $table->integer('quantity')->nullable();
             $table->foreignId('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             

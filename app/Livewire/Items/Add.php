@@ -18,11 +18,6 @@ class Add extends Component
     public ItemForm $itemForm;
     public CategoryForm $categoryForm;
 
-    public function mount(ItemList $listId)
-    {
-        $this->list = $listId;
-    }
-
     public function setCategoryId(): bool {
         $category = $this->categoryForm->firstOrCreate(); // get category
         if ($category) {

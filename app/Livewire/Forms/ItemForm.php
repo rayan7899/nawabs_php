@@ -59,7 +59,7 @@ class ItemForm extends Form
                 ['type' => $this->type]
             );
         } catch (\Throwable $th) {
-            throw $th; // TODO: remove it
+            Log::critical($th);
             return false;
         }
     }

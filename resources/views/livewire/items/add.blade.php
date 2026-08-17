@@ -1,10 +1,12 @@
 <div>
-    <flux:breadcrumbs class="mb-4">
-        <flux:button size="sm" icon="chevron-right" class="me-3 cursor-pointer" x-on:click="window.history.back()" />
-        <flux:breadcrumbs.item>{{ __('Lists') }}</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item href="{{ route('lists.manage', $list) }}">{{ __($list->name) }}</flux:breadcrumbs.item>
-        <flux:breadcrumbs.item>{{ __('New Item') }}</flux:breadcrumbs.item>
-    </flux:breadcrumbs>
+    <x-slot name="breadcrumbs">
+        <flux:breadcrumbs class="mb-4">
+            <flux:button size="sm" icon="chevron-right" class="me-3 cursor-pointer" x-on:click="window.history.back()" />
+            <flux:breadcrumbs.item>{{ __('Lists') }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item href="{{ route('lists.manage', $list) }}" wire:navigate>{{ __($list->name) }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item>{{ __('New Item') }}</flux:breadcrumbs.item>
+        </flux:breadcrumbs>
+    </x-slot>
 
     <x-card class="max-w-lg">
         <flux:heading>
