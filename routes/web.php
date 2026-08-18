@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ItemTypeEnum;
 use App\Livewire\Invitations\Invite;
 use App\Livewire\Items\Add as AddItem;
 use App\Livewire\Items\Show as ShowItems;
@@ -12,126 +13,205 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::get('seed', function () {
-
+    dump('waiting...');
     $categories = [
         [
-            'name' => 'فواكه',
-            'color' => '#FF5733',
-            'items' => [
-                ['name' => 'تفاح', 'type' => 1],
-                ['name' => 'موز', 'type' => 1],
-                ['name' => 'برتقال', 'type' => 1],
-                ['name' => 'عنب', 'type' => 1],
-                ['name' => 'فراولة', 'type' => 1],
-                ['name' => 'أناناس', 'type' => 1],
-                ['name' => 'ليمون', 'type' => 1],
-                ['name' => 'كيوي', 'type' => 1],
-                ['name' => 'مانجو', 'type' => 1],
-                ['name' => 'جوافة', 'type' => 1],
-                ['name' => 'خوخ', 'type' => 1],
-                ['name' => 'كمثرى', 'type' => 1],
-                ['name' => 'تين', 'type' => 1],
-                ['name' => 'رمان', 'type' => 1],
-                ['name' => 'بطيخ', 'type' => 1],
-                ['name' => 'شمام', 'type' => 1],
-            ],
-        ],
-        [
             'name' => 'خضروات',
-            'color' => '#33FF57',
+            'color' => '#22C55E',
             'items' => [
-                ['name' => 'خيار', 'type' => 1],
-                ['name' => 'طماطم', 'type' => 1],
-                ['name' => 'بطاطس', 'type' => 1],
-                ['name' => 'جزر', 'type' => 1],
-                ['name' => 'بصل', 'type' => 1],
-                ['name' => 'ثوم', 'type' => 1],
-                ['name' => 'فلفل', 'type' => 1],
-                ['name' => 'قرنبيط', 'type' => 1],
-                ['name' => 'بروكلي', 'type' => 1],
-                ['name' => 'سبانخ', 'type' => 1],
-                ['name' => 'كوسا', 'type' => 1],
-                ['name' => 'فاصوليا خضراء', 'type' => 1],
-                ['name' => 'كرنب', 'type' => 1],
-                ['name' => 'فجل', 'type' => 1],
-                ['name' => 'بطاطا حلوة', 'type' => 1],
-                ['name' => 'شمندر', 'type' => 1],
-                ['name' => 'ذرة', 'type' => 1],
-                ['name' => 'بازلاء', 'type' => 1],
-                ['name' => 'كرفس', 'type' => 1],
-                ['name' => 'كراث', 'type' => 1],
-                ['name' => 'بقدونس', 'type' => 1],
-                ['name' => 'نعناع', 'type' => 1],
-                ['name' => 'ريحان', 'type' => 1],
-                ['name' => 'زعتر', 'type' => 1],
-                ['name' => 'شبت', 'type' => 1],
-                ['name' => 'كزبرة', 'type' => 1],
-            ],
+                'قرنبيط',
+                'بروكلي',
+                'كوسا',
+                'فاصوليا خضراء',
+                'كرنب',
+                'فجل',
+                'ذرة',
+                'زعتر',
+                'شبت',
+                'سفرجل',
+                'كراث',
+                'بازلاء',
+                'ريحان',
+                'خس',
+                'جرجير',
+                'بطاطا حلوة',
+                'كزبرة',
+                'نعناع',
+                'بطاطس',
+                'فلفل',
+                'طماطم',
+                'جزر',
+                'سبانخ',
+                'بقدونس',
+                'كرفس',
+                'ثوم',
+                'رجلة',
+                'خيار',
+                'شمندر',
+                'بصل',
+            ]
         ],
         [
-            'name' => 'معلبات',
-            'color' => '#3357FF',
+            'name' => 'فواكه',
+            'color' => '#F97316',
             'items' => [
-                ['name' => 'فاصوليا', 'type' => 1],
-                ['name' => 'حمص', 'type' => 1],
-                ['name' => 'عدس', 'type' => 1],
-                ['name' => 'ذرة', 'type' => 1],
-                ['name' => 'بازلاء', 'type' => 1],
-                ['name' => 'طماطم', 'type' => 1],
-                ['name' => 'خضار مشكلة', 'type' => 1],
-                ['name' => 'سمك سردين', 'type' => 1],
-                ['name' => 'سمك تونة', 'type' => 1],
-                ['name' => 'فطر', 'type' => 1],
-                ['name' => 'زيتون', 'type' => 1],
-            ],
+                'مانجو',
+                'خوخ',
+                'تين',
+                'رمان',
+                'بطيخ',
+                'عنب',
+                'موز',
+                'جوافة',
+                'كيوي',
+                'ليمون اخضر',
+                'شمام',
+                'فراولة',
+                'أناناس',
+                'كمثرى',
+                'ليمون',
+                'تفاح 🍎',
+                'برتقال',
+                'تفاح',
+            ]
+        ],
+        [
+            'name' => 'منتجات الألبان',
+            'color' => '#3B82F6',
+            'items' => [
+                'حليب',
+                'لبن',
+                'جبنة',
+                'لبنه',
+                'زبادي',
+            ]
+        ],
+        [
+            'name' => 'لحوم',
+            'color' => '#EF4444',
+            'items' => [
+                'دجاج',
+                'لحم',
+                'سمك',
+                'برجر'
+            ]
+        ],
+        [
+            'name' => 'أدوات المطبخ',
+            'color' => '#EF4444',
+            'items' => [
+                'قصدير',
+            ]
         ],
         [
             'name' => 'حلويات',
-            'color' => '#FF33A1',
+            'color' => '#EF4444',
             'items' => [
-                ['name' => 'شوكولاتة', 'type' => 1],
-                ['name' => 'بسكويت', 'type' => 1],
-                ['name' => 'كعكة', 'type' => 1],
-            ],
+                'شوكولاتة',
+                'بسكويت',
+                'كعكة',
+            ]
         ],
         [
-            'name' => 'مشروبات',
-            'color' => '#A133FF',
+            'name' => 'عناية شخصية',
+            'color' => '#EF4444',
             'items' => [
-                ['name' => 'عصير', 'type' => 1],
-                ['name' => 'ماء', 'type' => 1],
-                ['name' => 'شاي', 'type' => 1],
-                ['name' => 'قهوة', 'type' => 1],
-                ['name' => 'مشروبات غازية', 'type' => 1],
-            ],
+                'معجون أسنان',
+            ]
+        ],
+        [
+            'name' => 'مجمدات 🧊',
+            'color' => '#EF4444',
+            'items' => [
+                'ستربس',
+                'لحم مفروم',
+                'صدور دجاج',
+            ]
         ],
         [
             'name' => 'مخبوزات',
-            'color' => '#33FFFF',
+            'color' => '#EF4444',
             'items' => [
-                ['name' => 'خبز', 'type' => 1],
-                ['name' => 'كرواسون', 'type' => 1],
-                ['name' => 'بيتزا', 'type' => 1],
-            ],
+                'خبز',
+                'بيتزا',
+                'كرواسون',
+            ]
         ],
         [
-            'name' => 'ألبان',
-            'color' => '#edd9d4',
+            'name' => 'مشروبات',
+            'color' => '#EF4444',
             'items' => [
-                ['name' => 'حليب', 'type' => 1],
-                ['name' => 'زبادي', 'type' => 1],
-                ['name' => 'جبنة', 'type' => 1],
-            ],
+                'ماء',
+                'شاي',
+                'مشروبات غازية',
+                'قهوة',
+                'عصير',
+            ]
+        ],
+        [
+            'name' => 'معلبات',
+            'color' => '#EF4444',
+            'items' => [
+                'فاصوليا',
+                'حمص',
+                'عدس',
+                'خضار مشكلة',
+                'زيتون',
+                'طماطم',
+                'بازلاء',
+                'سمك سردين',
+                'سمك تونة',
+                'صلصة',
+                'ذرة',
+                'فطر',
+            ]
+        ],
+        [
+            'name' => 'منظفات 🧼',
+            'color' => '#EF4444',
+            'items' => [
+                'صابون الوزير',
+                'صابون يدين',
+                'صابون مواعين',
+                'مناديل',
+                'الأسفنجة العجيبة',
+                'صابون ملابس',
+                'ملح غسالة المواعين',
+            ]
+        ],
+        [
+            'name' => 'مواد غذائية',
+            'color' => '#EF4444',
+            'items' => [
+                'مايونيز',
+                'عسل',
+                'كاتشب',
+                'بيض',
+                'شطة',
+                'بيض السمان 🪺',
+                'طحين',
+                'سماق',
+                'سكر',
+                'شاهي لبتون',
+            ]
         ],
     ];
-    dump('waiting...');
-    foreach ($categories as $category) {
-        $cat = Category::firstOrCreate([
-            'name' => $category['name'],
-            'color' => $category['color'],
+
+    foreach ($categories as $categoryData) {
+        $category = Category::create([
+            'name'          => $categoryData['name'],
+            'color'         => $categoryData['color'],
+            'created_by'    => 1,
         ]);
-        foreach ($category['items'] as $item) {
-            $cat->items()->firstOrCreate($item);
+
+        // Create items for this category
+        foreach ($categoryData['items'] as $itemName) {
+            Item::create([
+                'name'          => $itemName,
+                'category_id'   => $category->id,
+                'type'          => ItemTypeEnum::DEFAULT->value,
+                'created_by'    => 1,
+            ]);
         }
     }
     dd('done');
