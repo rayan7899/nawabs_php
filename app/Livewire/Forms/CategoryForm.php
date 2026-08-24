@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\CategoryTypeEnum;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -31,10 +32,14 @@ class CategoryForm extends Form
         $this->validate();
         try {
             return Category::query()->firstOrCreate(
-                ['name' => trim($this->name)],
                 [
-                    'color' => $this->color,
-                    'created_by' => Auth::id(),
+                    "name" => trim($this->name),
+                    "list_id"   => $this->list_id
+                ],
+                [
+                    "type"  => CategoryTypeEnum::CUSTOM,
+                    "color" => $this->color,
+                    "created_by" => Auth::id()
                 ]
             );
         } catch (\Throwable $th) {

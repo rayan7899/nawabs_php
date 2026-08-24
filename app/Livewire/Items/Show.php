@@ -6,6 +6,7 @@ use App\Enums\ListItemStatus;
 use App\Livewire\Forms\CategoryForm;
 use App\Livewire\Forms\ItemForm;
 use App\Models\Category;
+use App\Models\Item;
 use App\Models\ItemList;
 use App\Models\ListItem;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,7 @@ class Show extends Component
         }
         $this->list = ItemList::find($this->selectedListId);
         $this->lists = Auth::user()->lists;
+        $this->categoryForm->list_id = $this->list->id;
     }
 
     public function updatedSelectedListId()
@@ -55,19 +57,19 @@ class Show extends Component
 
     public function getCategoriesProperty()
     {
-        return $this->list->categoriesWithItems->sortBy('name');
+        return $this->list->categories->sortBy('name');
     }
 
     public function getItemsProperty()
     {
-        $items = ListItem::where('list_id', $this->selectedListId)->get();
+        $items = $this->list->items;
         if ($this->selectedCategory) {
-            $items = $items->filter(function ($pivot) {
-                return $pivot->item->category_id == $this->selectedCategory->id;
+            $items = $items->filter(function ($item) {
+                return $item->category_id == $this->selectedCategory->id;
             });
         }
         if ($this->search != '') {
-            $items = $items->filter(fn($pivot) => str_contains($pivot->item->name, trim($this->search)));
+            $items = $items->filter(fn($item) => str_contains($item->name, trim($this->search)));
         }
         return $items->sortBy('item.name');
     }
@@ -78,7 +80,7 @@ class Show extends Component
         $this->categoryForm->name = $category?->name ?? '';
     }
 
-    public function toggleItem(?array $data, ?ListItem $pivot)
+    public function toggleItem(?array $data, ?Item $item)
     {
         // validate the input
         if ($data && ($data['value'] > 99 || $data['value'] < 1)) {
@@ -88,18 +90,18 @@ class Show extends Component
             return;
         }
         try {
-            if ($pivot->id == null) {
-                $pivot = ListItem::find($data['pivot']['id']);
+            if ($item->id == null) {
+                $item = Item::find($data['item']['id']);
             }
 
-            if ($pivot->need_at) {
-                $pivot->update([
+            if ($item->need_at) {
+                $item->update([
                     'need_at'   => null,
                     'needed_by' => null,
                     'quantity'  => null,
                 ]);
             } else {
-                $pivot->update([
+                $item->update([
                     'need_at'   => now(),
                     'needed_by' => Auth::user()->id,
                     'quantity'  => $data['value'] ?? 1,
@@ -113,11 +115,11 @@ class Show extends Component
         }
     }
 
-    public function longPressed(ListItem $pivot)
+    public function longPressed(Item $item)
     {
         LivewireAlert::withNumberInput(placeholder: __('Quantity'))
             ->withConfirmButton(__('Save'))
-            ->onConfirm('toggleItem', ['pivot' => $pivot])
+            ->onConfirm('toggleItem', ['item' => $item])
             ->timer(0)
             ->show();
     }
@@ -129,8 +131,11 @@ class Show extends Component
         $this->itemForm->name = $this->search;
         $this->itemForm->category_id = $category->id;
         $item = $this->itemForm->firstOrCreate();
-        $this->list->items()->attach($item->id, [
-            'status'    => ListItemStatus::CUSTOM->value,
+        $this->list->items()->create([
+            'name'          => 'test',
+            'category_id'   => 1,
+            'type'          => 1,
+            'created_by'    => Auth::id(),
         ]);
         DB::commit();
         $this->reset('search');

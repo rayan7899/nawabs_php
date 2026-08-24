@@ -61,19 +61,20 @@
         }" class="flex flex-wrap gap-1.5 place-content-start w-full">
             <flux:input wire:model.live.debounce.400ms='search' size="sm" type="search" icon="magnifying-glass"
                 :placeholder="__('Search')" />
-            @forelse ($this->items as $pivot)
-                <x-card x-on:click="document.getElementById('button_{{ $pivot->id }}').classList.toggle('border-green-500')"
-                    wire:click='toggleItem(null, {{ $pivot->id }})'
+            @forelse ($this->items as $item)
+            {{-- @dump($item) --}}
+                <x-card x-on:click="document.getElementById('button_{{ $item->id }}').classList.toggle('border-green-500')"
+                    wire:click='toggleItem(null, {{ $item->id }})'
                     class="select-none flex flex-col justify-between w-23 h-23 text-center cursor-pointer overflow-hidden pb-2 px-2 m-0"
-                    x-on:mousedown="startPress({{ $pivot->id }})"
-                    x-on:touchstart.passive="startPress({{ $pivot->id }})" x-on:mouseup="clearPress()"
+                    x-on:mousedown="startPress({{ $item->id }})"
+                    x-on:touchstart.passive="startPress({{ $item->id }})" x-on:mouseup="clearPress()"
                     x-on:mouseleave="clearPress()" x-on:touchend="clearPress()">
-                    <hr id="button_{{ $pivot->id }}"
-                        class="mx-2 border-2 border-green-100 @if ($pivot->need_at) border-green-500 @endif rounded-md" />
-                    @if ($pivot->quantity)
-                        <flux:text>{{ $pivot->quantity }}</flux:text>
+                    <hr id="button_{{ $item->id }}"
+                        class="mx-2 border-2 border-green-100 @if ($item->need_at) border-green-500 @endif rounded-md" />
+                    @if ($item->quantity)
+                        <flux:text>{{ $item->quantity }}</flux:text>
                     @endif
-                    <flux:heading class="text-sm/4.5">{{ $pivot->item->name }}</flux:heading>
+                    <flux:heading class="text-sm/4.5">{{ $item->name }}</flux:heading>
                 </x-card>
             @empty
                 <x-card class="m-4">

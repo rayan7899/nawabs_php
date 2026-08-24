@@ -22,7 +22,7 @@ class ItemObserver
     public function updated(Item $item): void
     {
         if($item->wasChanged('need_at')) {
-            $item->itemUsage()->create([
+            $item->itemUsages()->create([
                 'action' => $item->need_at === null ? ItemUsageActions::REMOVE->value : ItemUsageActions::ADD->value,
                 'created_by' => Auth::id(),
             ]);

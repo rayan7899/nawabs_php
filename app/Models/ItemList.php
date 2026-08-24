@@ -20,10 +20,10 @@ class ItemList extends Model
         'created_by',
     ];
 
-    public function getCategoriesAttribute()
-    {
-        return $this->items->pluck('category')->unique('id');
-    }
+    // public function getCategoriesAttribute()
+    // {
+    //     return $this->items->pluck('category')->unique('id');
+    // }
 
     public function getCategoriesWithItemsAttribute()
     {
@@ -33,12 +33,14 @@ class ItemList extends Model
         })->values();
     }
 
-    public function items(): BelongsToMany
+    public function categories()
     {
-        return $this->belongsToMany(Item::class, 'list_items', 'list_id', 'item_id')
-            ->using(ListItem::class)
-            ->withPivot('status', 'need_at', 'needed_by', 'created_by')
-            ->withTimestamps();
+        return $this->hasMany(Category::class, 'list_id');
+    }
+
+    public function items($categoryId = null)
+    {
+        return $this->hasManyThrough(Item::class, Category::class, 'list_id', 'category_id');
     }
 
     public function users($status = [ListUserStatusEnum::PENDING->value, ListUserStatusEnum::ACCEPTED->value, ListUserStatusEnum::REJECTED->value, ListUserStatusEnum::CANCELLED->value]): BelongsToMany

@@ -23,11 +23,6 @@ class ItemUsage extends Model
         });
     }
 
-    public function listItem()
-    {
-        return $this->belongsTo(ListItem::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');

@@ -25,7 +25,8 @@ class Categories extends Component
     public function removeItemFromList($itemId)
     {
         try {
-            $this->list->items()->detach($itemId);
+            // TODO ask user if he sure to delete item
+            Item::find($itemId)->delete();
             LivewireAlert::title(__('Item deleted successfully.'))
                 ->success()
                 ->asToast()

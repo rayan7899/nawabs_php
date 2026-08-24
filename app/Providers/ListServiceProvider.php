@@ -4,13 +4,13 @@ namespace App\Providers;
 
 use App\Enums\ListUserRoleEnum;
 use App\Enums\ItemTypeEnum;
-use App\Enums\ListItemStatus;
 use App\Enums\ListTypeEnum;
 use App\Enums\ListStatusEnum;
 use App\Enums\ListUserStatusEnum;
-use App\Models\Item;
+use App\Models\Category;
 use App\Models\ItemList;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +25,7 @@ class ListServiceProvider extends ServiceProvider
     {
         User::created(function ($user) {
             try{
+                DB::beginTransaction();
                 // Create default list when create new user
                 $defaultList = ItemList::create([
                     'name' => __('My List'),
@@ -39,17 +40,24 @@ class ListServiceProvider extends ServiceProvider
                         'status' => ListUserStatusEnum::ACCEPTED->value,
                     ]);
     
-                // Get default items
-                $defaultItems = Item::where('type', ItemTypeEnum::DEFAULT->value)->get();
-    
-                // Attach default items to the new list
-                if ($defaultItems->isNotEmpty()) {
-                    $defaultList->items()->attach($defaultItems->pluck('id'), [
-                            'status' => ListItemStatus::DEFAULT->value,
-                            'created_by' => $user->id,
-                        ]);
+                // Get default categories
+                $defaultCategories = Category::where('type', ItemTypeEnum::DEFAULT->value)->get();
+
+                foreach ($defaultCategories as $category) {
+                    $newCategory = $category->replicate();
+                    $newCategory->list_id = $defaultList->id;
+                    $newCategory->type = ListTypeEnum::CUSTOM->value;
+                    $newCategory->save();
+                    foreach ($category->items as $item) {
+                        $newItem = $item->replicate();
+                        $newItem->category_id = $newCategory->id;
+                        $newItem->type = ItemTypeEnum::CUSTOM->value;
+                        $newItem->save();
+                    }
                 }
+                DB::commit();
             }catch (\Exception $e) {
+                DB::rollBack();
                 Log::critical($e);
             }
         });

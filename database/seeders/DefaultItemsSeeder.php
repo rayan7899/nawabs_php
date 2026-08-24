@@ -2,10 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CategoryTypeEnum;
 use App\Enums\ItemTypeEnum;
+use App\Enums\ListStatusEnum;
+use App\Enums\ListTypeEnum;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\ItemList;
 use Illuminate\Support\Facades\Auth;
 
 class DefaultItemsSeeder extends Seeder
@@ -196,10 +200,18 @@ class DefaultItemsSeeder extends Seeder
             ],
         ];
 
+        $list = ItemList::create([
+            'name'          => __("My List"),
+            'type'          => ListTypeEnum::DEFAULT->value,
+            'status'        => ListStatusEnum::ACTIVE->value,
+            'created_by'    => Auth::id(),
+        ]);
         foreach ($categories as $categoryData) {
             $category = Category::create([
                 'name'          => $categoryData['name'],
                 'color'         => $categoryData['color'],
+                'type'          => CategoryTypeEnum::DEFAULT->value,
+                'list_id'       => $list->id,
                 'created_by'    => Auth::id(),
             ]);
 
