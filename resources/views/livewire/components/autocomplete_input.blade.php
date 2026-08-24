@@ -24,8 +24,9 @@ new class extends Component {
 
         return $this->model::where('name', 'like', '%' . $query . '%')
             // ->whereNotIn('id', $attachedItemIds) //TODO provide attached items, get it by params as $exceptedIds
+            ->select('name')
+            ->distinct()
             ->orderBy('name')
-            ->groupBy('name')
             ->limit(8)
             ->get();
     }
