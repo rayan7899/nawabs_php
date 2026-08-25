@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\ItemList;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class DefaultItemsSeeder extends Seeder
@@ -199,7 +200,7 @@ class DefaultItemsSeeder extends Seeder
                 ]
             ],
         ];
-
+        Auth::onceUsingId(User::where('is_admin', true)->first()->id);
         $list = ItemList::create([
             'name'          => __("My List"),
             'type'          => ListTypeEnum::DEFAULT->value,
