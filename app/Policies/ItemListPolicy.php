@@ -21,9 +21,9 @@ class ItemListPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ItemList $itemList): bool
+    public function view(User $user, ItemList $list): bool
     {
-        return false;
+        return $user->lists->contains($list);
     }
 
     /**
@@ -37,9 +37,9 @@ class ItemListPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ItemList $itemList): bool
+    public function update(User $user, ItemList $list): bool
     {
-        return false;
+        return $list->created_by == $user->id;
     }
 
     /**

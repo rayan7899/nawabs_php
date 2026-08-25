@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\ItemList;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Categories extends Component
@@ -14,9 +15,11 @@ class Categories extends Component
 
     public function mount(ItemList $list)
     {
+        $this->authorize('view', $list);
         $this->list = $list;
     }
 
+    #[Computed]
     public function getCategoriesWithItemsProperty()
     {
         return $this->list->categoriesWithItems;
@@ -32,23 +35,8 @@ class Categories extends Component
                 ->asToast()
                 ->show();
         } catch (\Throwable $th) {
-            Log::error('Error deleting item: ' . $th->getMessage());
+            Log::critical('Error deleting item: ' . $th->getMessage());
             LivewireAlert::title(__('Error deleting item.') . $th->getCode())
-                ->timer(4000)->timerProgressBar(true)->error()->show();
-        }
-    }
-
-    public function addItemToList(Item $itemId)
-    {
-        try {
-            $this->list->items()->attach($itemId);
-            LivewireAlert::title(__('Item added successfully.'))
-                ->success()
-                ->asToast()
-                ->show();
-        } catch (\Throwable $th) {
-            Log::error('Error adding item: ' . $th->getMessage());
-            LivewireAlert::title(__('Error adding item.') . $th->getCode())
                 ->timer(4000)->timerProgressBar(true)->error()->show();
         }
     }

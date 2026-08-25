@@ -39,7 +39,6 @@ class ItemForm extends Form
             return $item;
         } catch (\Throwable $th) {
             Log::critical($th);
-            throw $th; // TODO: remove it later
             return false;
         }
     }
@@ -58,6 +57,21 @@ class ItemForm extends Form
                 ['name' => trim($this->name), 'category_id' => $this->category_id],
                 ['type' => $this->type]
             );
+        } catch (\Throwable $th) {
+            Log::critical($th);
+            return false;
+        }
+    }
+
+    public function update(Item $item)
+    {
+        $this->validate();
+        try {
+            $item->update([
+                'name'          => $this->name,
+                'category_id'   => $this->category_id,
+            ]);
+            return true;
         } catch (\Throwable $th) {
             Log::critical($th);
             return false;

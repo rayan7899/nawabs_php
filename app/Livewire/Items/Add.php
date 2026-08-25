@@ -46,7 +46,7 @@ class Add extends Component
         if ($newItem) {
             LivewireAlert::title(__('Item added successfully.'))
                 ->success()->asToast()->show();
-            $this->reset(['itemForm.name', 'categoryForm.name']);
+            $this->reset(['itemForm.name']);
             DB::commit();
             return;
         } else {

@@ -5,13 +5,13 @@ namespace App\Livewire\Forms;
 use App\Enums\CategoryTypeEnum;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class CategoryForm extends Form
 {
-    public $name, $color;
+    public $name, $color, $list_id;
 
     protected function rules()
     {
@@ -44,6 +44,23 @@ class CategoryForm extends Form
             );
         } catch (\Throwable $th) {
             Log::critical($th);
+            return false;
+        }
+    }
+
+    /**
+     * Update existing category.
+     */
+    public function update(Category $category)
+    {
+        $this->validate();
+        try {
+            DB::beginTransaction();
+            $category->update($this->only('name', 'color'));
+            DB::commit();
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
             return false;
         }
     }

@@ -32,6 +32,14 @@ class ListForm extends Form
         $this->user = $user;
     }
 
+    public function setList(ItemList $list)
+    {
+        $this->list = $list;
+        $this->name = $list->name;
+        $this->type = $list->type;
+        $this->status = $list->status;
+    }
+
     /**
      * Create new custom list and attach it to auth user.
      */
@@ -65,6 +73,23 @@ class ListForm extends Form
             LiveWireAlert::title(__('Failed to create list'))
                 ->error()
                 ->show();
+        }
+    }
+
+    /**
+     * Update existing list.
+     */
+    public function update()
+    {
+        $this->validate();
+        try {
+            $this->list->update([
+                'name'  => trim($this->name),
+            ]);
+            return true;
+        } catch (\Throwable $th) {
+            Log::critical($th);
+            return false;
         }
     }
 }
