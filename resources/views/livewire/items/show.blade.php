@@ -82,8 +82,16 @@
                     <flux:text>{{ __("You can add items by inter its name and category below.") }}</flux:text>
 
                     <form class="flex flex-col gap-3 mt-4" wire:submit="newItem">
-                        <flux:input wire:model='search' label="{{__('Name')}}" />
-                        <flux:input wire:model='categoryForm.name' clearable label="{{__('Category')}}" />
+                        <!-- autocomplete input for item name -->
+                        <livewire:components.autocomplete_input wire:model='search' :model="App\Models\Item::class" :label="__(':var Name', ['var' => __('Item')])"
+                            :placeholder="__('Start typing to find items')" :required="true" />
+                        <flux:error name="itemForm.name"/>
+
+                        <!-- autocomplete input for category name -->
+                        <livewire:components.autocomplete_input wire:model='categoryForm.name' :model="App\Models\Category::class" :label="__('Category')"
+                            :placeholder="__('Start typing to find categories')" :required="true" clearable/>
+                        <flux:error name="categoryForm.name"/>
+
                         <flux:button class="w-fit cursor-pointer" 
                             type="submit" variant="filled">
                             {{__('Save')}}

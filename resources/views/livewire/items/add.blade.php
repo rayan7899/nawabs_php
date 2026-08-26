@@ -21,12 +21,12 @@
         <form wire:submit.prevent="add" class="mt-4 space-y-3">
             <!-- autocomplete input for item name -->
             <livewire:components.autocomplete_input wire:model='itemForm.name' :model="App\Models\Item::class" :label="__(':var Name', ['var' => __('Item')])"
-                :placeholder="__('Start typing to find items')" :required="false" />
+                :placeholder="__('Start typing to find items')" :required="true" />
             <flux:error name="itemForm.name"/>
 
             <!-- autocomplete input for category name -->
             <livewire:components.autocomplete_input wire:model='categoryForm.name' :model="App\Models\Category::class" :label="__('Category')"
-                :placeholder="__('Start typing to find categories')" :required="false" />
+                :placeholder="__('Start typing to find categories')" :required="true" />
             <flux:error name="categoryForm.name"/>
             
             <div class="flex items-center gap-2">

@@ -45,7 +45,8 @@ new class extends Component {
         <flux:input type="text" wire:model.live="value"
             :placeholder="$placeholder" 
             class="w-full" 
-            :required="$required"/>
+            :required="$required"
+            clearable/>
     </flux:field>
 
     @if ($showSuggestions && $this->suggestions->isNotEmpty())
