@@ -26,7 +26,7 @@
                 </flux:navlist.group>
                 
                 @auth
-                    <flux:navlist.item icon="Envelope"
+                    <flux:navlist.item icon="envelope"
                         :href="route('invitations.show')" :current="request()->routeIs('invitations.show')" wire:navigate
                         badge="{{auth()->user()->invitations->count()}}" badge-color="red">
                         {{ __('Invitations') }}
