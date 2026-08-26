@@ -125,7 +125,7 @@
                     <flux:menu.item :href="route('showItems')" icon="rectangle-group" wire:navigate>{{ __('Items') }}</flux:menu.item>
 
                     <flux:menu.separator />
-                    <flux:menu.item :href="route('invitations.show')" icon="Envelope" wire:navigate> {{ __('Invitations') }} </flux:menu.item>
+                    <flux:menu.item :href="route('invitations.show')" icon="envelope" wire:navigate> {{ __('Invitations') }} </flux:menu.item>
                     <flux:menu.separator />
                     <flux:menu.submenu icon="bars-4" heading="{{__('My Lists')}}">
                         @foreach (auth()->user()->lists as $list)
