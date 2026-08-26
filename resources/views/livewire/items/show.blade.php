@@ -29,7 +29,7 @@
         <flux:separator orientation="vertical" variant="subtle" class="" />
 
         <!-- Categories in mobile -->
-        <div class="flex flex-nowrap gap-1 overflow-auto sm:hidden sticky top-0 py-4 dark:bg-neutral-800 bg-white">
+        <div class="flex flex-nowrap gap-1 overflow-auto sm:hidden sticky top-0 p-2 rounded-md dark:bg-neutral-800 bg-white">
             <flux:button wire:click="selectCategory()"
                 variant="{{ $selectedCategory?->id == null ? 'filled' : 'ghost' }}" size="sm">
                 {{ __("All") }}
@@ -65,7 +65,7 @@
             {{-- @dump($item) --}}
                 <x-card x-on:click="document.getElementById('button_{{ $item->id }}').classList.toggle('border-green-500')"
                     wire:click='toggleItem(null, {{ $item->id }})'
-                    class="select-none flex flex-col justify-between w-23 h-23 text-center cursor-pointer overflow-hidden pb-2 px-2 m-0"
+                    class="select-none flex flex-col justify-between w-22.5 aspect-square text-center cursor-pointer overflow-hidden pb-2 px-2 m-0"
                     x-on:mousedown="startPress({{ $item->id }})"
                     x-on:touchstart.passive="startPress({{ $item->id }})" x-on:mouseup="clearPress()"
                     x-on:mouseleave="clearPress()" x-on:touchend="clearPress()">
