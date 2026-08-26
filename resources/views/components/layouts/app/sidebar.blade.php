@@ -19,14 +19,14 @@
                     @if(auth()->user()->is_admin)
                         <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     @endif
-                    <flux:navlist.item icon="list-bullet" :href="route('showItems')" :current="request()->routeIs('showItems')" wire:navigate>{{ __('Items') }}</flux:navlist.item>
+                    <flux:navlist.item icon="rectangle-group" :href="route('showItems')" :current="request()->routeIs('showItems')" wire:navigate>{{ __('Items') }}</flux:navlist.item>
                     @if(auth()->user()->is_admin)
                         <flux:navlist.item icon="adjustments-horizontal" href="/admin/default-items" :current="request()->is('admin/default-items')" wire:navigate>{{ __('Default Items') }}</flux:navlist.item>
                     @endif
                 </flux:navlist.group>
                 
                 @auth
-                    <flux:navlist.item icon="adjustments-horizontal"
+                    <flux:navlist.item icon="Envelope"
                         :href="route('invitations.show')" :current="request()->routeIs('invitations.show')" wire:navigate
                         badge="{{auth()->user()->invitations->count()}}" badge-color="red">
                         {{ __('Invitations') }}
@@ -88,13 +88,12 @@
         <flux:header class="lg:hidden">
             {{-- <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" /> --}}
 
-            <flux:spacer />
+            {{-- <flux:spacer /> --}}
 
-            <flux:dropdown position="top" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
+            <flux:dropdown position="top" align="start">
+                <flux:profile :initials="auth()->user()->initials()"
                     icon-trailing="chevron-down"
-                />
+                    avatar:color="auto" avatar:color:seed="{{auth()->user()->id}}"/>
 
                 <flux:menu>
                     <flux:menu.radio.group>
@@ -123,10 +122,21 @@
                         <flux:menu.separator />
                     @endif
 
-                    <flux:menu.item :href="route('showItems')" icon="list-bullet" wire:navigate>{{ __('Items') }}</flux:menu.item>
+                    <flux:menu.item :href="route('showItems')" icon="rectangle-group" wire:navigate>{{ __('Items') }}</flux:menu.item>
 
                     <flux:menu.separator />
-                    <flux:menu.item :href="route('invitations.show')" icon="adjustments-horizontal" wire:navigate> {{ __('Invitations') }} </flux:menu.item>
+                    <flux:menu.item :href="route('invitations.show')" icon="Envelope" wire:navigate> {{ __('Invitations') }} </flux:menu.item>
+                    <flux:menu.separator />
+                    <flux:menu.submenu icon="bars-4" heading="{{__('My Lists')}}">
+                        @foreach (auth()->user()->lists as $list)
+                            <flux:menu.item :href="route('lists.manage', ['list'=>$list->id])" wire:navigate>
+                                {{ $list->name }}
+                            </flux:menu.item>
+                        @endforeach
+                        <flux:modal.trigger name="create-list">
+                            <flux:button class="w-full" variant="ghost">{{__("Add new list")}}</flux:button>
+                        </flux:modal.trigger>
+                    </flux:menu.submenu>
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
@@ -143,6 +153,10 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
+            <flux:spacer/>
+            <flux:brand>
+                <x-app-logo/>
+            </flux:brand>
         </flux:header>
 
         {{ $slot }}

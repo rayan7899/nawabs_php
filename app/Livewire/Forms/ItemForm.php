@@ -3,13 +3,16 @@
 namespace App\Livewire\Forms;
 
 use App\Enums\ItemTypeEnum;
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Form;
 
 class ItemForm extends Form
 {
+    const MAX_ITEM_COUNT = 128;
     public $name, $category_id, $type;
 
     protected function rules()
@@ -28,6 +31,13 @@ class ItemForm extends Form
      */
     public function create(): Item|bool
     {
+        if(Category::find($this->category_id)->list->items->count() >= $this::MAX_ITEM_COUNT){
+            LivewireAlert::title(__('Can not add new item.'))
+                ->text(__('You have reached the maximum number of items allowed per list.'))
+                ->error()->asToast()->timer(10000)
+                ->show();
+            return false;
+        }
         $this->type = ItemTypeEnum::CUSTOM->value;
         $this->validate();
         try {
@@ -50,6 +60,13 @@ class ItemForm extends Form
      */
     public function firstOrCreate(): Item|bool
     {
+        if(Category::find($this->category_id)->list->items->count() >= $this::MAX_ITEM_COUNT){
+            LivewireAlert::title(__('Can not add new item.'))
+                ->text(__('You have reached the maximum number of items allowed per list.'))
+                ->error()->asToast()->timer(10000)
+                ->show();
+            return false;
+        }
         $this->type = ItemTypeEnum::CUSTOM->value; // always make new items as custom, only admin can make it default.
         $this->validate();
         try {

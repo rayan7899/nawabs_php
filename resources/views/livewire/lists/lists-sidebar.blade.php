@@ -20,6 +20,7 @@
                     class="w-full text-sm"
                     autofocus
                 />
+                <flux:error name="listForm.name" />
                 <div class="flex gap-1 justify-end">
                     <flux:button size="xs" variant="ghost" wire:click="cancelAddingList" class="px-2">
                         {{ __('Cancel') }}

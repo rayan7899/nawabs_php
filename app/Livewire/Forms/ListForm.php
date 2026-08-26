@@ -15,7 +15,8 @@ use Livewire\Form;
 
 class ListForm extends Form
 {
-    public $user, $list;
+    const MAX_LISTS_COUNT = 4;
+    public $list;
     public $name, $type, $status;
 
     protected function rules()
@@ -25,11 +26,6 @@ class ListForm extends Form
             'type'      => [],
             'status'    => [],
         ];
-    }
-
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 
     public function setList(ItemList $list)
@@ -43,10 +39,19 @@ class ListForm extends Form
     /**
      * Create new custom list and attach it to auth user.
      */
-    public function create(): void
+    public function create()
     {
+        if(Auth::user()->lists()->where('type', ListTypeEnum::CUSTOM->value)->count() >= $this::MAX_LISTS_COUNT){
+            LivewireAlert::title(__('Can not add new list.'))
+                ->text(__('You have reached the maximum number of lists allowed.'))
+                ->error()
+                ->asToast()
+                ->timer(10000)
+                ->show();
+            return;
+        }
         $this->validate();
-
+        
         try {
             DB::beginTransaction();
             $list = ItemList::create([
@@ -57,7 +62,7 @@ class ListForm extends Form
             ]);
 
             // Attach the user to the new custom list with the owner role
-            $this->user->lists()->attach($list->id, [
+            Auth::user()->lists()->attach($list->id, [
                 'role' => ListUserRoleEnum::OWNER,
                 'status' => ListTypeEnum::CUSTOM->value,
             ]);
@@ -68,11 +73,14 @@ class ListForm extends Form
                 ->success()
                 ->asToast()
                 ->show();
+            return $list;
         } catch (\Exception $e) {
-            Log::error(__('Failed to create list: ') . $e->getMessage());
-            LiveWireAlert::title(__('Failed to create list'))
+            Log::error(__('Failed to create list: ') . $e);
+            LiveWireAlert::title(__("Error"))
+                ->text(__('Failed to create list'))
                 ->error()
                 ->show();
+            return false;
         }
     }
 

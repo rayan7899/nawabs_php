@@ -107,7 +107,9 @@
     "New Item": "غرض جديد",
     "Add new custom item to selected list to use it in future.": "أضف عنصرًا مخصصًا جديدًا إلى القائمة المحددة لاستخدامه في المستقبل.",
     "Start typing to find items": "ابدأ الكتابة للعثور على الأغراض",
+    "Can not add new item.": "لا يمكن إضافة عنصر جديد.",
     "Start typing to find categories": "ابدأ الكتابة للعثور على التصنيفات",
+    "You have reached the maximum number of items allowed per list.": "لقد وصلت إلى الحد الأقصى لعدد العناصر المسموح بها في كل قائمة.",
 
     "Usage":"سجل الإستخدام",
     "No item's usages recorded.":"لا يوجد سجل استخدام لهذا العنصر.",

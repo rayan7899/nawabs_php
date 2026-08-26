@@ -2,29 +2,21 @@
 
 namespace App\Livewire\Lists;
 
+use App\Livewire\Forms\ListForm;
 use Livewire\Component;
-use App\Models\ItemList;
-use Illuminate\Support\Facades\Auth;
 
 class CreateList extends Component
 {
-    public $name = '';
+    public ListForm $listForm;
 
-    public function create()
+    public function save()
     {
-        $this->validate([
-            'name' => 'required|min:3'
-        ]);
-
-        ItemList::create([
-            'name' => $this->name,
-            'user_id' => Auth::id(),
-            'is_default' => false
-        ]);
-
-        $this->dispatch('list-created');
-        $this->dispatch('close-modal');
-        $this->reset('name');
+        $list = $this->listForm->create();
+        if($list){
+            $this->redirectRoute('lists.manage', ['list'=>$list->id]);
+        }
+        $this->modal('create-list')->close();
+        $this->reset('listForm.name');
     }
 
     public function render()
