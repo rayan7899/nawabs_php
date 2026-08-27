@@ -25,7 +25,7 @@ class Show extends Component
     public $search = '';
     #[Session('selectedListId')]
     public ?int $selectedListId = null;
-    public ItemList $list;
+    public ?ItemList $list;
     public $lists = [];
     #[Session('shoppingMode')]
     public $shoppingMode = false;
@@ -36,12 +36,8 @@ class Show extends Component
 
     public function mount($list = null)
     {
-        if (!$this->selectedListId) {
-            if ($list) {
-                $this->selectedListId = $list->id;
-            } else {
-                $this->selectedListId = Auth::user()->lists->first()->id;
-            }
+        if ($this->selectedListId == null || !Auth::user()->lists->pluck('id')->contains($this->selectedListId)) {
+            $this->selectedListId = Auth::user()->lists->first()->id;
         }
         $this->list = ItemList::find($this->selectedListId);
         $this->lists = Auth::user()->lists;
