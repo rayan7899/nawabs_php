@@ -2,13 +2,12 @@
 
 namespace App\Livewire\Items;
 
-use App\Enums\ListItemStatus;
 use App\Livewire\Forms\CategoryForm;
 use App\Livewire\Forms\ItemForm;
+use App\Livewire\Forms\ListForm;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\ItemList;
-use App\Models\ListItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -16,8 +15,6 @@ use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Session;
 use Livewire\Component;
-
-use function Livewire\Volt\placeholder;
 
 #[Layout('components.layouts.guest')]
 class Show extends Component
@@ -31,17 +28,18 @@ class Show extends Component
     public $shoppingMode = false;
     public ?Category $selectedCategory = null;
     public string $categoryName;
-    public ItemForm $itemForm;
+    public ListForm $listForm;
     public CategoryForm $categoryForm;
+    public ItemForm $itemForm;
 
     public function mount($list = null)
     {
         if ($this->selectedListId == null || !Auth::user()->lists->pluck('id')->contains($this->selectedListId)) {
-            $this->selectedListId = Auth::user()->lists->first()->id;
+            $this->selectedListId = Auth::user()->lists->first()?->id;
         }
         $this->list = ItemList::find($this->selectedListId);
         $this->lists = Auth::user()->lists;
-        $this->categoryForm->list_id = $this->list->id;
+        $this->categoryForm->list_id = $this->list?->id;
     }
 
     public function updatedSelectedListId()
@@ -137,6 +135,14 @@ class Show extends Component
         $this->reset('search');
         LivewireAlert::title(__('Item added successfully.'))
             ->success()->asToast()->show();
+    }
+
+    public function createList()
+    {
+        $list = $this->listForm->create();
+        if($list){
+            $this->redirectIntended(route('lists.manage', ['list'=>$list->id]));
+        }
     }
 
     public function render()
