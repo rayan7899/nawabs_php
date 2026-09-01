@@ -54,6 +54,9 @@
     "No": "لا",
     "Yes": "نعم",
 
+    "Users": "المستخدمين",
+    "Show all users in the system": "استعراض جميع المستخدمين في النظام",
+    "Active": "نشط",
     "Invitations": "الدعوات",
     "No invitations": "لا يوجد دعوات",
     "Invite User": "دعوة مستخدم",
@@ -114,6 +117,12 @@
     "Usage":"سجل الإستخدام",
     "No item's usages recorded.":"لا يوجد سجل استخدام لهذا العنصر.",
 
+    "Showing": "عرض",
+    "to": "إلى",
+    "of": "من",
+    "results": "نتائج",
+
+    "Status": "الحالة",
     "My List": "قائمتي",
     "My Lists": "قوائمي",
     "You don't have any list": "لا يوجد لديك قوائم",
