@@ -3,6 +3,7 @@
 namespace App\Livewire\Category;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -22,10 +23,10 @@ class Add extends Component
             Category::create([
                 'name' => $this->category_name,
                 'color' => '#000000',
+                'created_by' => Auth::id()
             ]);
             $this->category_name = '';
         } catch (\Throwable $th) {
-            dd($th);
             Log::error($th);
         }
     }

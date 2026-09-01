@@ -18,13 +18,6 @@ class Category extends Model
         'created_by',
     ];
 
-    protected static function booted()
-    {
-        static::creating(function ($category) {
-            $category->created_by = Auth::id();
-        });
-    }
-
     protected function color(): Attribute
     {
         return Attribute::make(

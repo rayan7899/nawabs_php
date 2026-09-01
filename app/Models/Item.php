@@ -22,13 +22,6 @@ class Item extends Model
         'created_by',
     ];
 
-    protected static function booted()
-    {
-        static::creating(function ($item) {
-            $item->created_by = Auth::id();
-        });
-    }
-
     public function itemUsages(): HasMany
     {
         return $this->hasMany(ItemUsage::class);

@@ -3,6 +3,7 @@
 namespace App\Livewire\Category;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Manage extends Component
@@ -47,6 +48,7 @@ class Manage extends Component
             Category::create([
                 'name' => $this->name,
                 'color' => $this->color,
+                'created_by' => Auth::id()
             ]);
         }
         $this->resetForm();

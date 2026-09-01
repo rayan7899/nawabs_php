@@ -5,6 +5,7 @@ namespace App\Livewire\Forms;
 use App\Enums\ItemTypeEnum;
 use App\Models\Category;
 use App\Models\Item;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
@@ -45,6 +46,7 @@ class ItemForm extends Form
                 'name'          => $this->name,
                 'type'          => $this->type,
                 'category_id'   => $this->category_id,
+                'created_by'    => Auth::id()
             ]);
             return $item;
         } catch (\Throwable $th) {
@@ -72,7 +74,7 @@ class ItemForm extends Form
         try {
             return Item::query()->firstOrCreate(
                 ['name' => trim($this->name), 'category_id' => $this->category_id],
-                ['type' => $this->type]
+                ['type' => $this->type, 'created_by' => Auth::id()]
             );
         } catch (\Throwable $th) {
             Log::critical($th);

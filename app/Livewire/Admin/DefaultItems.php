@@ -33,7 +33,8 @@ class DefaultItems extends Component
 
         Category::create([
             'name' => $this->newCategoryName,
-            'color' => $this->newCategoryColor
+            'color' => $this->newCategoryColor,
+            'created_by' => Auth::id()
         ]);
 
         $this->newCategoryName = '';
@@ -83,7 +84,8 @@ class DefaultItems extends Component
             'name' => $this->newItemName,
             'category_id' => $this->selectedCategoryId,
             'private' => false,
-            'active' => false
+            'active' => false,
+            'created_by' => Auth::id()
         ]);
 
         $this->newItemName = '';

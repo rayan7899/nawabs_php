@@ -43,15 +43,20 @@ class ListServiceProvider extends ServiceProvider
                 // Get default categories
                 $defaultCategories = Category::where('type', ItemTypeEnum::DEFAULT->value)->get();
 
+                // replicate default categories to new user
                 foreach ($defaultCategories as $category) {
                     $newCategory = $category->replicate();
                     $newCategory->list_id = $defaultList->id;
                     $newCategory->type = ListTypeEnum::CUSTOM->value;
+                    $newCategory->created_by = $user->id;
                     $newCategory->save();
+
+                    // replicate default items to new user
                     foreach ($category->items as $item) {
                         $newItem = $item->replicate();
                         $newItem->category_id = $newCategory->id;
                         $newItem->type = ItemTypeEnum::CUSTOM->value;
+                        $newItem->created_by = $user->id;
                         $newItem->save();
                     }
                 }
