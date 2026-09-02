@@ -65,13 +65,30 @@ class Show extends Component
         if ($this->search != '') {
             $items = $items->filter(fn($item) => str_contains($item->name, trim($this->search)));
         }
-        return $items->sortBy('item.name');
+        return $items->sortBy('category_id');
+    }
+
+    public function getActiveItemsProperty()
+    {
+        $items = $this->list->items->whereNotNull('need_at')
+            ->sortBy('category_id');
+        if ($this->selectedCategory) {
+            $items = $items->filter(function ($item) {
+                return $item->category_id == $this->selectedCategory->id;
+            });
+        }
+        return $items;
     }
 
     public function selectCategory(Category $category)
     {
-        $this->selectedCategory = $category->id ? $category : null;
-        $this->categoryForm->name = $category?->name ?? '';
+        if($this->selectedCategory == $category){
+            $this->selectedCategory = null;
+            $this->categoryForm->name = '';
+        }else{
+            $this->selectedCategory = $category->id ? $category : null;
+            $this->categoryForm->name = $category?->name ?? '';
+        }
     }
 
     public function toggleItem(?array $data, ?Item $item)
