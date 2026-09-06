@@ -12,7 +12,7 @@
         </div>
 
         @can('invite', $list) 
-        <div class="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow min-w-md max-h-fit">
+        <div class="bg-white dark:bg-neutral-800 p-4 rounded-lg shadow min-w-sm max-h-fit">
             <flux:heading>{{ __('Invite User') }}</flux:heading>
             <flux:text class="mt-1">
                 {{ __('Invite users to interact together in this list.') }}

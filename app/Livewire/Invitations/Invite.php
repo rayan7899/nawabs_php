@@ -8,6 +8,7 @@ use App\Enums\ListUserRoleEnum;
 use App\Enums\ListUserStatusEnum;
 use App\Models\ItemList;
 use App\Models\User;
+use App\Notifications\InvitationReceived;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
@@ -65,6 +66,7 @@ class Invite extends Component
             ]);
             $this->reset('invitedUser');
             $this->dispatch('refreshInvitees');
+            $user->notify(new InvitationReceived($this->list->id));
             LivewireAlert::title(__('Invitation sent successfully.'))
                 ->success()->asToast()->show();
         } catch (\Throwable $th) {

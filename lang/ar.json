@@ -121,6 +121,14 @@
     "to": "إلى",
     "of": "من",
     "results": "نتائج",
+    
+    "Notifications": "الإشعارات",
+    "There's no notifications": "لا يوجد إشعارات",
+    "Invitation received": "لقد تلقيت دعوة",
+    "Mark all as read": "تمييز الكل كمقروء",
+    "Delete all": "حذف الكل",
+    "Hello!": "مرحباً!",
+    "You received an invitation to participate in the list (:name)": "لقد تلقيت دعوة للمشاركة في القائمة (:name)",
 
     "Status": "الحالة",
     "My List": "قائمتي",

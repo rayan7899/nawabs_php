@@ -11,6 +11,8 @@
                 <fLux:brand class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                     <x-app-logo />
                 </fLux:brand>
+                <flux:spacer/>
+                <livewire:notifications.icon>
                 <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" class="cursor-pointer"/>
             </div>
 
@@ -153,6 +155,7 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
+            <livewire:notifications.icon/>
             <flux:spacer/>
             <flux:brand>
                 <x-app-logo/>

@@ -39,12 +39,8 @@ class Invitees extends Component
     function confirmCancelInvitation(User $user)
     {
         try {
-            $this->list->users()->updateExistingPivot($user->id, [
-                'status' => ListUserStatusEnum::CANCELLED,
-                'status_changed_at' => now()
-            ]);
+            $this->list->users()->detach($user->id);
             LivewireAlert::title(__('Invitation canceled'))->success()->asToast()->show();
-
         } catch (\Throwable $th) {
             LivewireAlert::title(__('Failed to cancel invitation'))->error()->show();
             Log::critical("Failed to cancel invitation: " . $th->getMessage(), ['exception' => $th]);
