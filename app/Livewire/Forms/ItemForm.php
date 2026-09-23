@@ -19,7 +19,7 @@ class ItemForm extends Form
     protected function rules()
     {
         return [
-            'name'          => ['required', 'string', 'min:1', 'max:16'],
+            'name'          => ['required', 'string', 'min:1', 'max:32'],
             'category_id'   => ['required', 'exists:categories,id'],
             'type'          => ['required', Rule::enum(ItemTypeEnum::class)],
         ];
